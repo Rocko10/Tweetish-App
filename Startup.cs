@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TweetishApp.Data;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,15 @@ namespace TweetishApp
             services.AddControllersWithViews();
             services.AddDbContext<AppDbContext>(options => {
                 options.UseSqlite(Configuration.GetConnectionString("Default"));
+            });
+            services.AddIdentity<AppUser, IdentityRole>(options => {
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddEntityFrameworkStores<AppDbContext>();
+
+            services.ConfigureExternalCookie(options => {
+                options.LoginPath = "/accounts/login";
+                options.LogoutPath = "/accounts/logout";
             });
         }
 
