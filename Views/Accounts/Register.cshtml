@@ -1,0 +1,13 @@
+@model TweetishApp.Models.UserCreationVM
+
+<h1>Create an Account</h1>
+
+<form asp-controller="Accounts" asp-action="Register" method="POST">
+    <label>Nickname</label>
+    <input type="text" asp-for="Nickname"> <br>
+    <label>Password</label>
+    <input type="password" asp-for="Password"> <br>
+    <label>Confirm Password</label>
+    <input type="password" asp-for="ConfirmPassword"> <br>
+    <input type="submit" value="Create">
+</form>

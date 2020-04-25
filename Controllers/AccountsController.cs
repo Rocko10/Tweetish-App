@@ -24,12 +24,24 @@ namespace TweetishApp.Controllers
             _userManager = userManager;
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Register([FromForm] UserCreationVM vm)
         {
             if (!ModelState.IsValid) {
-                ViewData["error"] = "Invalid input for creation";
+                TempData["error"] = "Invalid input for creation";
                 _logger.LogInformation("Invalid input for creation");
+
+                return Redirect("/accounts/register");
+            }
+
+            if (vm.Password != vm.ConfirmPassword) {
+                TempData["error"] = "Password dont match";
+                _logger.LogInformation("Passwords input dont match");
 
                 return Redirect("/accounts/register");
             }
@@ -39,9 +51,10 @@ namespace TweetishApp.Controllers
                 UserName = vm.Nickname
             };
 
-            var result = await _userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user, vm.Password);
 
             if (!result.Succeeded) {
+                TempData["error"] = "An error ocurred, try again";
                 _logger.LogError("Error while registering an user");
 
                 return Redirect("/accounts/register");
@@ -50,11 +63,16 @@ namespace TweetishApp.Controllers
             return Redirect("/accounts/login");
         }
 
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login([FromForm] UserCreationVM vm)
         {
             if (!ModelState.IsValid) {
-                ViewData["error"] = "Invalid input for creation";
+                TempData["error"] = "Invalid input for creation";
                 _logger.LogInformation("Invalid input for creation");
 
                 return Redirect("/accounts/login");
@@ -63,16 +81,16 @@ namespace TweetishApp.Controllers
             AppUser user = await _userManager.FindByNameAsync(vm.Nickname);
 
             if (user == null) {
-                ViewData["error"] = "Nickname or password invalid";
+                TempData["error"] = "Nickname or password invalid";
                 _logger.LogInformation("Nickname not found");
 
-                return Redirect("/acounts/login");
+                return Redirect("/accounts/login");
             }
 
             bool match = await _signInManager.UserManager.CheckPasswordAsync(user, vm.Password);
 
             if (!match) {
-                ViewData["error"] = "Nickname or password invalid";
+                TempData["error"] = "Nickname or password invalid";
                 _logger.LogInformation("Password no match");
 
                 return Redirect("/accounts/login");
