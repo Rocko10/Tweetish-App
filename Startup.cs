@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using TweetishApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +37,8 @@ namespace TweetishApp
                 options.LoginPath = "/accounts/login";
                 options.LogoutPath = "/accounts/logout";
             });
+
+            services.AddScoped<TweetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
