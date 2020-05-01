@@ -58,5 +58,34 @@ namespace TweetishApp.Services
                 await _service.Create(tweet);
             });
         }
+
+        [Test]
+        public async Task IsUpdatingTweet()
+        {
+            Tweet tweet = new Tweet {UserId = "123", Text = "First"};
+            tweet = await _service.Create(tweet);
+            int tweetId = tweet.Id;
+            Assert.AreNotEqual(0, tweetId);
+            Assert.AreEqual("First", tweet.Text);
+
+            tweet.Text = "Modified";
+            tweet = await _service.Update(tweet);
+            Assert.AreEqual(tweetId, tweet.Id);
+            Assert.AreEqual("Modified", tweet.Text);
+        }
+
+        [Test]
+        public async Task IsRemovingTweet()
+        {
+            Tweet tweet = new Tweet {UserId = "123", Text = "To remove"};
+            await _service.Create(tweet);
+            int tweetId = tweet.Id;
+            List<Tweet> tweets = _dbContext.Tweet.ToList();
+            Assert.AreEqual(1, tweets.Count);
+
+            await _service.Remove(tweetId);
+            tweets = _dbContext.Tweet.ToList();
+            Assert.AreEqual(0, tweets.Count);
+        }
     }
 }
