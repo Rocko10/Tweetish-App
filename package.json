@@ -1,0 +1,20 @@
+{
+  "name": "tweetish-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Rocko10/Tweetish-App.git",
+  "author": "Marco Nuñez <marco.soulg@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "scripts": {
+    "build-tweet-create": "parcel build ./wwwroot/js/tweets/create/Main.jsx --out-dir ./wwwroot/dist/js/tweets/create/"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "parcel-bundler": "^1.12.4"
+  }
+}

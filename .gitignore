@@ -1,4 +1,7 @@
 bin/
 obj/
+wwwroot/dist/
+node_modules/
+.cache/
 app.db
 app.db*
