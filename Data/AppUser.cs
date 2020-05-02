@@ -7,6 +7,6 @@ namespace TweetishApp.Data
     public class AppUser : IdentityUser
     {
         public string Nickname {get; set;}
-        public List<Tweet> Tweets {get; set;}
+        public List<TweetModel> Tweets {get; set;}
     }
 }

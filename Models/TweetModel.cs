@@ -1,9 +1,11 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using TweetishApp.Data;
 
 namespace TweetishApp.Models
 {
-    public class Tweet
+    [Table("tweets")]
+    public class TweetModel
     {
         public int Id {get; set;}
         public string UserId {get; set;}

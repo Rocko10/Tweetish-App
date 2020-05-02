@@ -9,8 +9,8 @@ using TweetishApp.Data;
 namespace TweetishApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200426034654_AddTweet")]
-    partial class AddTweet
+    [Migration("20200502110910_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -213,7 +213,7 @@ namespace TweetishApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TweetishApp.Models.Tweet", b =>
+            modelBuilder.Entity("TweetishApp.Models.TweetModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -235,7 +235,7 @@ namespace TweetishApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tweet");
+                    b.ToTable("tweets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -289,7 +289,7 @@ namespace TweetishApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TweetishApp.Models.Tweet", b =>
+            modelBuilder.Entity("TweetishApp.Models.TweetModel", b =>
                 {
                     b.HasOne("TweetishApp.Data.AppUser", "User")
                         .WithMany("Tweets")

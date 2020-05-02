@@ -1,10 +1,11 @@
 using System;
-using TweetishApp.Services;
+using TweetishApp.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TweetishApp.Data;
 using Microsoft.AspNetCore.Hosting;
+using TweetishApp.Core.Interfaces;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,7 @@ namespace TweetishApp
                 options.LogoutPath = "/accounts/logout";
             });
 
+            services.AddScoped<ITweetRepository, TweetRepository>();
             services.AddScoped<TweetService>();
         }
 

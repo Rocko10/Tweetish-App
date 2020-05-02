@@ -8,6 +8,6 @@ namespace TweetishApp.Data
     {
         public AppDbContext(DbContextOptions options) : base(options) {}
 
-        public DbSet<Tweet> Tweet {get; set;}
+        public DbSet<TweetModel> Tweet {get; set;}
     }
 }
