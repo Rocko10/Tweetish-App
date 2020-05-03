@@ -37,6 +37,7 @@ namespace TweetishApp.Core.Services
         public async Task IsCreatingTweetInService()
         {
             Tweet tweet = new Tweet(userId: "123");
+            tweet.Text = "super tweet";
             Assert.AreNotEqual("0001-01-01 00:00:00", tweet.CreatedAt);
             Assert.AreEqual(0, tweet.Id);
 
