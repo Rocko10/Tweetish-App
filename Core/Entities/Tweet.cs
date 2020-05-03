@@ -17,6 +17,10 @@ namespace TweetishApp.Core.Entities
             UpdatedAt = DateTime.UtcNow;
         }
 
-        public Tweet() {}
+        public Tweet()
+        {
+            CreatedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

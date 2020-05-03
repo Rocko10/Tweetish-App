@@ -93,5 +93,19 @@ namespace TweetishApp.Data
                 await _repository.Remove(10);
             });
         }
+
+        [Test]
+        public async Task IsGettingTweetsByUser()
+        {
+            Tweet tweet = new Tweet {UserId = "123", Text = "First"};
+            await _repository.Create(tweet);
+            tweet.Text = "Second";
+            await _repository.Create(tweet);
+            tweet.Text = "Third";
+            await _repository.Create(tweet);
+
+            List<Tweet> tweets = await _repository.GetAllByUserId("123");
+            Assert.AreEqual(3, tweets.Count);
+        }
     }
 }
