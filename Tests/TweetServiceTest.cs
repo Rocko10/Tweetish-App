@@ -44,5 +44,21 @@ namespace TweetishApp.Core.Services
             Assert.AreNotEqual(0, tweet.Id);
             Assert.AreNotEqual("0001-01-01 00:00:00", tweet.CreatedAt);
         }
+
+        [Test]
+        public void IsThrowingOnInvalidTweet()
+        {
+            Tweet tweet = new Tweet();
+            Assert.ThrowsAsync<ArgumentException>(async () => {
+                await _service.Create(tweet);
+            });
+
+            tweet.UserId = "123";
+            tweet.Text = "a";
+
+            Assert.ThrowsAsync<ArgumentException>(async () => {
+                await _service.Create(tweet);
+            });
+        }
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react'
 import ReactDom from 'react-dom'
+import Layout from './Layout'
 
-ReactDom.render(<h1>React setted</h1>, document.getElementById("app"))
+ReactDom.render(<Layout/>, document.getElementById("app"))

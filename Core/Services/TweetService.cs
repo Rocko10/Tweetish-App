@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using TweetishApp.Core.Interfaces;
 using TweetishApp.Core.Entities;
@@ -16,9 +17,13 @@ namespace TweetishApp.Core.Services
 
         public async Task<Tweet> Create(Tweet tweet)
         {
+            if (tweet.UserId == null || tweet.Text.Length < 3) {
+                throw new ArgumentException("Invalid tweet");
+            }
+
             tweet = await _repository.Create(tweet);
 
-           return tweet;
+            return tweet;
         }
 
         public async Task<Tweet> Update(Tweet tweet)
