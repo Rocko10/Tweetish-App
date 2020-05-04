@@ -1,8 +1,8 @@
 namespace TweetishApp.Core.Entities
 {
-    public class Follower
+    public class Following
     {
-        public string Id {get; set;}
+        public string FollowerId {get; set;}
         public string FolloweeId {get; set;}
     }
 }

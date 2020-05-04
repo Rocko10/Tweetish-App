@@ -24,5 +24,6 @@ namespace TweetishApp.Data
         }
 
         public DbSet<TweetModel> Tweet {get; set;}
+        public DbSet<FollowingModel> Following {get; set;}
     }
 }
