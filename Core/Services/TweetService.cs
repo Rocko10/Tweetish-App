@@ -37,5 +37,10 @@ namespace TweetishApp.Core.Services
         {
             await _repository.Remove(id);
         }
+
+        public async Task<List<Tweet>> GetTweetsBy(string userId)
+        {
+            return await _repository.GetTweetsBy(userId);
+        }
     }
 }

@@ -42,7 +42,10 @@ namespace TweetishApp.Data
         public void populate()
         {
             _dbContext.Add<FollowingModel>(
-                new FollowingModel {FollowerId = "1", FolloweeId = "10"}
+                new FollowingModel {
+                    FollowerId = "1", FolloweeId = "10",
+                    Follower = new FollowerModel { Id = "1", Nickname = "joe" }, Followee = new FolloweeModel { Id = "10", Nickname = "ben" }
+                }
             );
             _dbContext.Add<FollowingModel>(
                 new FollowingModel {FollowerId = "1", FolloweeId = "11"}

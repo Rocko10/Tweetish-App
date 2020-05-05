@@ -9,5 +9,6 @@ namespace TweetishApp.Core.Interfaces
         Task<Tweet> Create(Tweet tweet); 
         Task<Tweet> Update(Tweet tweet);
         Task Remove(int id);
+        Task<List<Tweet>> GetTweetsBy(string userId);
     }
 }

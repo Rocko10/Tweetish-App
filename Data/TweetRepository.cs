@@ -82,5 +82,29 @@ namespace TweetishApp.Data
 
             return tweets;
         }
+
+        public async Task<List<Tweet>> GetTweetsBy(string userId)
+        {
+            List<TweetModel> models = await _dbContext.Tweet
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+
+            List<Tweet> tweets = new List<Tweet>();
+
+            foreach (TweetModel m in models) {
+                Tweet t = new Tweet
+                {
+                    Id = m.Id,
+                    UserId = m.UserId,
+                    Text = m.Text,
+                    CreatedAt = m.CreatedAt,
+                    UpdatedAt = m.UpdatedAt
+                };
+
+                tweets.Add(t);
+            }
+
+            return tweets;
+        }
     }
 }
