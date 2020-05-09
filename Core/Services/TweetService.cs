@@ -6,7 +6,7 @@ using TweetishApp.Core.Entities;
 
 namespace TweetishApp.Core.Services
 {
-    public class TweetService
+    public class TweetService : ITweetService
     {
         private readonly ITweetRepository _repository;
 
