@@ -72,5 +72,19 @@ namespace TweetishApp.Data
                 FolloweeId = model.FolloweeId
             };
         }
+
+        public async Task Remove(Following following)
+        {
+            FollowingModel model = await _dbContext.Following
+            .FirstOrDefaultAsync(f => f.FollowerId == following.FollowerId && f.FolloweeId == following.FolloweeId);
+
+            if (model == null) {
+                throw new ArgumentException("Following not exist");
+            }
+
+            _dbContext.Following.Remove(model);
+            await _dbContext.SaveChangesAsync();
+        }
     }
+
 }

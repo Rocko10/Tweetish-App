@@ -95,7 +95,36 @@ namespace TweetishApp.Data
             Assert.AreEqual(1, following.Id);
             Assert.AreEqual("22", following.FollowerId);
             Assert.AreEqual("11", following.FolloweeId);
+        }
 
+        [Test]
+        public async Task IsUnfollowingUser()
+        {
+            Following following = new Following {FollowerId = "2", FolloweeId = "1"};
+
+            await _repository.Create(following);
+            following.FolloweeId = "0";
+            await _repository.Create(following);
+            following.FolloweeId = "-1";
+            await _repository.Create(following);
+
+            List<FollowingModel> models = _dbContext.Following.ToList();
+            Assert.AreEqual(3, models.Count);
+
+            following.FollowerId = "2";
+            following.FolloweeId = "0";
+
+            await _repository.Remove(following);
+            models = _dbContext.Following.ToList();
+            Assert.AreEqual(2, models.Count);
+        }
+
+        [Test]
+        public void IsThrowingWhenUnfollowingNotExist()
+        {
+            Assert.ThrowsAsync<ArgumentException>(async () => {
+                await _repository.Remove(new Following {FollowerId = "1", FolloweeId = "2"});
+            });
         }
     }
 }
