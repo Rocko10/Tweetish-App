@@ -44,7 +44,8 @@ namespace TweetishApp.Data
             _dbContext.Add<FollowingModel>(
                 new FollowingModel {
                     FollowerId = "1", FolloweeId = "10",
-                    Follower = new FollowerModel { Id = "1", Nickname = "joe" }, Followee = new FolloweeModel { Id = "10", Nickname = "ben" }
+                    Follower = new AppUser {Nickname = "Terry"},
+                    Followee = new AppUser {Nickname = "Ryu"}
                 }
             );
             _dbContext.Add<FollowingModel>(
@@ -69,7 +70,7 @@ namespace TweetishApp.Data
             this.populate();
 
             List<Following> followees = await _repository.GetAllFolloweesFrom("1");
-            Assert.AreEqual(3, followees.Count);
+            Assert.AreEqual(2, followees.Count);
         }
 
         [Test]
@@ -79,6 +80,22 @@ namespace TweetishApp.Data
 
             List<Following> followers = await _repository.GetAllFollowersOf("1");
             Assert.AreEqual(2, followers.Count);
+        }
+
+        [Test]
+        public async Task IsFollowingUser()
+        {
+            List<FollowingModel> models = _dbContext.Following.ToList();
+            Assert.AreEqual(0, models.Count);
+
+            Following following = new Following {FollowerId = "22", FolloweeId = "11"};
+            following = await _repository.Create(following);
+            models = _dbContext.Following.ToList();
+            Assert.AreEqual(1, models.Count);
+            Assert.AreEqual(1, following.Id);
+            Assert.AreEqual("22", following.FollowerId);
+            Assert.AreEqual("11", following.FolloweeId);
+
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using TweetishApp.Data;
 
 namespace TweetishApp.Models
 {
@@ -8,9 +9,9 @@ namespace TweetishApp.Models
         public int Id {get; set;}
         
         public string FollowerId {get; set;}
-        public FollowerModel Follower {get; set;}
+        public AppUser Follower {get; set;}
 
         public string FolloweeId {get; set;}
-        public FolloweeModel Followee {get; set;}
+        public AppUser Followee {get; set;}
     }
 }

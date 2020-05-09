@@ -55,5 +55,22 @@ namespace TweetishApp.Data
 
             return followees;
         }
+
+        public async Task<Following> Create(Following following)
+        {
+            FollowingModel model = new FollowingModel {
+                FollowerId = following.FollowerId,
+                FolloweeId = following.FolloweeId
+            };
+
+            _dbContext.Following.Add(model);
+            await _dbContext.SaveChangesAsync();
+
+            return new Following {
+                Id = model.Id,
+                FollowerId = model.FollowerId,
+                FolloweeId = model.FolloweeId
+            };
+        }
     }
 }

@@ -14,12 +14,12 @@ namespace TweetishApp.Data
 
             builder.Entity<FollowingModel>()
             .HasOne(fi => fi.Follower)
-            .WithMany(fr => fr.Followings)
+            .WithMany()
             .HasForeignKey(fi => fi.FollowerId);
 
             builder.Entity<FollowingModel>()
             .HasOne(fi => fi.Followee)
-            .WithMany(fe => fe.Followings)
+            .WithMany()
             .HasForeignKey(fi => fi.FolloweeId);
         }
 
