@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using TweetishApp.Data;
 
@@ -13,5 +14,7 @@ namespace TweetishApp.Models
         public string Text {get; set;}
         public DateTime CreatedAt {get; set;}
         public DateTime UpdatedAt {get; set;}
+
+        public List<RetweetModel> Retweets {get; set;} = new List<RetweetModel>();
     }
 }

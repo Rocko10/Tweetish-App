@@ -9,5 +9,6 @@ namespace TweetishApp.Data
         public string Nickname {get; set;}
         public List<TweetModel> Tweets {get; set;}
         public List<FollowingModel> Followings {get; set;}
+        public List<RetweetModel> Retweets {get; set;} = new List<RetweetModel>();
     }
 }
