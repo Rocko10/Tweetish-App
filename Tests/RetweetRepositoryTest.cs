@@ -119,5 +119,24 @@ namespace TweetishApp.Data
             models = _dbContext.Retweet.ToList();
             Assert.AreEqual(0, models.Count);
         }
+
+        [Test]
+        public async Task IsGettingRetweetInfoInRepository()
+        {
+            AppUser userModel = new AppUser { Nickname = "marcow" };
+            _dbContext.Users.Add(userModel);
+            Assert.NotNull(userModel.Id);
+
+            TweetModel tweetModel = new TweetModel { UserId = userModel.Id, Text = "Super tweet!" };
+            _dbContext.Add<TweetModel>(tweetModel);
+            _dbContext.SaveChanges();
+
+            Retweet retweet = new Retweet {UserId = userModel.Id, TweetId = tweetModel.Id};
+            await _repository.Create(retweet);
+            
+            retweet = await _repository.GetInfo(retweet);
+            Assert.AreEqual(userModel.Id, retweet.User.Id);
+            Assert.AreEqual(tweetModel.Text, retweet.Tweet.Text);
+        }
     }
 }

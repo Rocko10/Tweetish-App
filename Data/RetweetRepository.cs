@@ -77,5 +77,25 @@ namespace TweetishApp.Data
             _dbContext.Add<RetweetModel>(model);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Retweet> GetInfo(Retweet retweet)
+        {
+            RetweetModel model = await _dbContext.Retweet
+            .Include(r => r.User)
+            .Include(r => r.Tweet)
+            .FirstOrDefaultAsync(r => r.UserId == retweet.UserId && r.TweetId == retweet.TweetId);
+
+            if (model == null) {
+                throw new ArgumentNullException("Retweet not found while retrieving info."); 
+            }
+
+            return new Retweet {
+                Id = model.Id,
+                TweetId = model.TweetId,
+                UserId = model.UserId,
+                User = model.User,
+                Tweet = new Tweet { Id = model.Tweet.Id, Text = model.Tweet.Text, UserId = model.UserId }
+            };
+        }
     }
 }

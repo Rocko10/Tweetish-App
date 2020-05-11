@@ -8,5 +8,6 @@ namespace TweetishApp.Core.Interfaces
         Task<Retweet> Create(Retweet retweet);
         Task Remove(Retweet retweet);
         Task Toggle(Retweet retweet);
+        Task<Retweet> GetInfo(Retweet retweet);
     }
 }
