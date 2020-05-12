@@ -52,7 +52,7 @@ namespace TweetishApp.Data
             };
             Assert.AreEqual(0, retweet.Id);
             retweet = await _repository.Create(retweet);
-            Assert.AreEqual(1, retweet.Id);
+            Assert.AreNotEqual(0, retweet.Id);
             Assert.AreEqual("123", retweet.UserId);
             Assert.AreEqual(1, retweet.TweetId);
         }

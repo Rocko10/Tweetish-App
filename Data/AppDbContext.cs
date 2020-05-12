@@ -31,10 +31,16 @@ namespace TweetishApp.Data
             .HasOne(rt => rt.Tweet)
             .WithMany(t => t.Retweets)
             .HasForeignKey(rt => rt.TweetId);
+
+            // builder.Entity<ReactionModel>()
+            // .HasOne(r => r.User)
+            // .WithMany(u => u.Reactions)
+            // .HasForeignKey(r => r.UserId);
         }
 
         public DbSet<TweetModel> Tweet {get; set;}
         public DbSet<FollowingModel> Following {get; set;}
         public DbSet<RetweetModel> Retweet {get; set;}
+        public DbSet<ReactionModel> Reaction {get; set;}
     }
 }
