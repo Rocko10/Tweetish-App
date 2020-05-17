@@ -68,13 +68,18 @@ namespace TweetishApp.Data
             Assert.AreEqual(0, reaction.Id);
             Assert.AreEqual(0, models.Count);
 
-            reaction = await _repository.Create(reaction);
+            reaction = await _repository.Toggle(reaction);
             models = await _dbContext.UserTweetReaction.ToListAsync();
             Assert.AreEqual("marcow", reaction.User.Nickname);
             Assert.AreEqual("Super First Tweet", reaction.Tweet.Text);
             Assert.AreEqual("Star", reaction.Reaction.Name);
             Assert.AreNotEqual(0, reaction.Id);
             Assert.AreEqual(1, models.Count);
+
+            reaction = await _repository.Toggle(reaction);
+            Assert.IsNull(reaction);
+            models = await _dbContext.UserTweetReaction.ToListAsync();
+            Assert.AreEqual(0, models.Count);
         }
     }
 }

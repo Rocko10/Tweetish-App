@@ -5,6 +5,6 @@ namespace TweetishApp.Core.Interfaces
 {
     public interface IUserTweetReactionRepository
     {
-        Task<UserTweetReaction> Create(UserTweetReaction userTweetReaction);
+        Task<UserTweetReaction> Toggle(UserTweetReaction userTweetReaction);
     }
 }

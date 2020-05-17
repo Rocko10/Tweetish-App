@@ -18,7 +18,7 @@ namespace TweetishApp.Data
             _dbContext = dbContext;
         }
 
-        public async Task<UserTweetReaction> Create(UserTweetReaction userTweetReaction)
+        public async Task<UserTweetReaction> Toggle(UserTweetReaction userTweetReaction)
         {
             AppUser user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userTweetReaction.UserId);
             TweetModel tweetModel = await _dbContext.Tweet.FirstOrDefaultAsync(t => t.Id == userTweetReaction.TweetId);
@@ -28,7 +28,22 @@ namespace TweetishApp.Data
                 throw new ArgumentNullException("Invalid input");
             }
 
-            UserTweetReactionModel model = new UserTweetReactionModel
+            UserTweetReactionModel model;
+
+            if (userTweetReaction.Id > 0) {
+                model = await _dbContext.UserTweetReaction.FirstOrDefaultAsync(u => u.Id == userTweetReaction.Id);
+
+                if (model != null) {
+                    _dbContext.Remove<UserTweetReactionModel>(model);
+                    await _dbContext.SaveChangesAsync();
+
+                    return null;
+                }
+
+                throw new ArgumentNullException("User tweet reaction not found");
+            }
+
+            model = new UserTweetReactionModel
             {
                 UserId = userTweetReaction.UserId,
                 TweetId = userTweetReaction.TweetId,
