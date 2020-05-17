@@ -1,7 +1,9 @@
 using TweetishApp.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TweetishApp.Models
 {
+    [Table("user_tweet_reactions")]
     public class UserTweetReactionModel
     {
         public int Id {get; set;}

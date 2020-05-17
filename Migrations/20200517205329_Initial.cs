@@ -48,6 +48,19 @@ namespace TweetishApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "reactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_reactions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -154,6 +167,39 @@ namespace TweetishApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "followings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FollowerId = table.Column<string>(nullable: true),
+                    FolloweeId = table.Column<string>(nullable: true),
+                    AppUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_followings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_followings_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_followings_AspNetUsers_FolloweeId",
+                        column: x => x.FolloweeId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_followings_AspNetUsers_FollowerId",
+                        column: x => x.FollowerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "tweets",
                 columns: table => new
                 {
@@ -169,6 +215,65 @@ namespace TweetishApp.Migrations
                     table.PrimaryKey("PK_tweets", x => x.Id);
                     table.ForeignKey(
                         name: "FK_tweets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "retweets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: true),
+                    TweetId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_retweets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_retweets_tweets_TweetId",
+                        column: x => x.TweetId,
+                        principalTable: "tweets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_retweets_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_tweet_reactions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: true),
+                    TweetId = table.Column<int>(nullable: false),
+                    ReactionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_tweet_reactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_user_tweet_reactions_reactions_ReactionId",
+                        column: x => x.ReactionId,
+                        principalTable: "reactions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_user_tweet_reactions_tweets_TweetId",
+                        column: x => x.TweetId,
+                        principalTable: "tweets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_user_tweet_reactions_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -213,8 +318,48 @@ namespace TweetishApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_followings_AppUserId",
+                table: "followings",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_followings_FolloweeId",
+                table: "followings",
+                column: "FolloweeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_followings_FollowerId",
+                table: "followings",
+                column: "FollowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_retweets_TweetId",
+                table: "retweets",
+                column: "TweetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_retweets_UserId",
+                table: "retweets",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_tweets_UserId",
                 table: "tweets",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tweet_reactions_ReactionId",
+                table: "user_tweet_reactions",
+                column: "ReactionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tweet_reactions_TweetId",
+                table: "user_tweet_reactions",
+                column: "TweetId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tweet_reactions_UserId",
+                table: "user_tweet_reactions",
                 column: "UserId");
         }
 
@@ -236,10 +381,22 @@ namespace TweetishApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "tweets");
+                name: "followings");
+
+            migrationBuilder.DropTable(
+                name: "retweets");
+
+            migrationBuilder.DropTable(
+                name: "user_tweet_reactions");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "reactions");
+
+            migrationBuilder.DropTable(
+                name: "tweets");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

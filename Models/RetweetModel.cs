@@ -1,7 +1,9 @@
 using TweetishApp.Data;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TweetishApp.Models
 {
+    [Table("retweets")]
     public class RetweetModel
     {
         public int Id {get; set;}

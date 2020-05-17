@@ -211,31 +211,14 @@ namespace TweetishApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("TweetishApp.Models.FolloweeModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FolloweeModel");
-                });
-
-            modelBuilder.Entity("TweetishApp.Models.FollowerModel", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FollowerModel");
-                });
-
             modelBuilder.Entity("TweetishApp.Models.FollowingModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FolloweeId")
                         .HasColumnType("TEXT");
@@ -245,11 +228,48 @@ namespace TweetishApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppUserId");
+
                     b.HasIndex("FolloweeId");
 
                     b.HasIndex("FollowerId");
 
                     b.ToTable("followings");
+                });
+
+            modelBuilder.Entity("TweetishApp.Models.ReactionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("reactions");
+                });
+
+            modelBuilder.Entity("TweetishApp.Models.RetweetModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TweetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TweetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("retweets");
                 });
 
             modelBuilder.Entity("TweetishApp.Models.TweetModel", b =>
@@ -275,6 +295,32 @@ namespace TweetishApp.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("tweets");
+                });
+
+            modelBuilder.Entity("TweetishApp.Models.UserTweetReactionModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ReactionId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("TweetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReactionId");
+
+                    b.HasIndex("TweetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("user_tweet_reactions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -330,19 +376,55 @@ namespace TweetishApp.Migrations
 
             modelBuilder.Entity("TweetishApp.Models.FollowingModel", b =>
                 {
-                    b.HasOne("TweetishApp.Models.FolloweeModel", "Followee")
+                    b.HasOne("TweetishApp.Data.AppUser", null)
                         .WithMany("Followings")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("TweetishApp.Data.AppUser", "Followee")
+                        .WithMany()
                         .HasForeignKey("FolloweeId");
 
-                    b.HasOne("TweetishApp.Models.FollowerModel", "Follower")
-                        .WithMany("Followings")
+                    b.HasOne("TweetishApp.Data.AppUser", "Follower")
+                        .WithMany()
                         .HasForeignKey("FollowerId");
+                });
+
+            modelBuilder.Entity("TweetishApp.Models.RetweetModel", b =>
+                {
+                    b.HasOne("TweetishApp.Models.TweetModel", "Tweet")
+                        .WithMany("Retweets")
+                        .HasForeignKey("TweetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TweetishApp.Data.AppUser", "User")
+                        .WithMany("Retweets")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("TweetishApp.Models.TweetModel", b =>
                 {
                     b.HasOne("TweetishApp.Data.AppUser", "User")
                         .WithMany("Tweets")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("TweetishApp.Models.UserTweetReactionModel", b =>
+                {
+                    b.HasOne("TweetishApp.Models.ReactionModel", "Reaction")
+                        .WithMany()
+                        .HasForeignKey("ReactionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TweetishApp.Models.TweetModel", "Tweet")
+                        .WithMany()
+                        .HasForeignKey("TweetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TweetishApp.Data.AppUser", "User")
+                        .WithMany("Reactions")
                         .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
