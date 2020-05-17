@@ -47,5 +47,10 @@ namespace TweetishApp.Core.Services
         {
             return await _repository.Create(following);
         }
+
+        public async Task Remove(Following following)
+        {
+            await _repository.Remove(following);
+        }
     }
 }

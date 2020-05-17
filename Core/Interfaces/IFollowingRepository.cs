@@ -11,5 +11,6 @@ namespace TweetishApp.Core.Interfaces
         // Who I follow
         Task<List<Following>> GetAllFolloweesFrom(string userId);
         Task<Following> Create(Following following);
+        Task Remove(Following following);
     }
 }
