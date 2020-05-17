@@ -59,7 +59,7 @@ namespace TweetishApp.Core.Services
             List<Following> followers = await _service.GetAllFollowersOf("1");
             Assert.AreEqual(3, followers.Count);
 
-            List<Following> followees = await _service.GetAllFolloweesOf("20");
+            List<Following> followees = await _service.GetAllFolloweesFrom("20");
             Assert.AreEqual(2, followees.Count);
         }
 

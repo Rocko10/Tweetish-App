@@ -32,7 +32,6 @@ namespace TweetishApp.Data
             .WithMany(t => t.Retweets)
             .HasForeignKey(rt => rt.TweetId);
 
-            // TODO
             builder.Entity<UserTweetReactionModel>()
             .HasOne(r => r.User)
             .WithMany(u => u.Reactions)

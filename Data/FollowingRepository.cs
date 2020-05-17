@@ -58,6 +58,18 @@ namespace TweetishApp.Data
 
         public async Task<Following> Create(Following following)
         {
+            AppUser follower = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == following.FollowerId);
+
+            if (follower == null) {
+                throw new ArgumentNullException("Follower not found");
+            }
+
+            AppUser followee = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == following.FolloweeId);
+
+            if (followee == null) {
+                throw new ArgumentNullException("Followee not found");
+            }
+
             FollowingModel model = new FollowingModel {
                 FollowerId = following.FollowerId,
                 FolloweeId = following.FolloweeId
@@ -68,7 +80,9 @@ namespace TweetishApp.Data
 
             return new Following {
                 Id = model.Id,
+                Follower = follower,
                 FollowerId = model.FollowerId,
+                Followee = followee,
                 FolloweeId = model.FolloweeId
             };
         }

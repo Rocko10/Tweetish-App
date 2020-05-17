@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TweetishApp.Core.Services
 {
-    public class FollowingService
+    public class FollowingService : IFollowingService
     {
         private readonly IFollowingRepository _repository;
         private ITweetService _tweetService; 
@@ -25,14 +25,14 @@ namespace TweetishApp.Core.Services
             return await _repository.GetAllFollowersOf(userId);
         }
 
-        public async Task<List<Following>> GetAllFolloweesOf(string userId)
+        public async Task<List<Following>> GetAllFolloweesFrom(string userId)
         {
             return await _repository.GetAllFolloweesFrom(userId);
         }
 
         public async Task<List<Tweet>> GetFolloweesTweets(string userId)
         {
-            List<Following> followees = await this.GetAllFolloweesOf(userId);
+            List<Following> followees = await this.GetAllFolloweesFrom(userId);
             List<Tweet> tweets = new List<Tweet>();
 
             foreach (Following f in followees) {
@@ -41,6 +41,11 @@ namespace TweetishApp.Core.Services
             }
 
             return tweets;
+        }
+
+        public async Task<Following> Create(Following following)
+        {
+            return await _repository.Create(following);
         }
     }
 }
