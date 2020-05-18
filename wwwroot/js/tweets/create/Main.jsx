@@ -1,5 +1,5 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-import Layout from './Layout'
+import TweetCreationLayout from './TweetCreationLayout'
 
-ReactDom.render(<Layout/>, document.getElementById("app"))
+ReactDom.render(<TweetCreationLayout/>, document.getElementById("app"))

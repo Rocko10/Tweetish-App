@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Layout extends React.Component {
+export default class TweetCreationLayout extends React.Component {
 
     constructor(props){
         super(props)
@@ -42,7 +42,7 @@ export default class Layout extends React.Component {
 
     render() {
         if (!this.userId) {
-            return null
+            return <p>Login to start tweeting</p>
         }
 
         return <div>

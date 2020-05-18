@@ -4,15 +4,23 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TweetishApp</title>
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
     <header>
+        <partial name="_NavHeader"/>
     </header>
+
+    <partial name="_ErrorMsg"/>
+
     <div class="container">
-        <partial name="_ErrorMsg"/>
+
         @RenderBody()
+
     </div>
 
+    <footer>
+    </footer>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

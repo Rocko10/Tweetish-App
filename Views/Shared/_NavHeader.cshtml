@@ -1,0 +1,22 @@
+<nav>
+    <ul>
+        <li>
+            @Html.ActionLink("Home", "Index", "Home")
+        </li>
+        @if (User.Identity.IsAuthenticated) {
+            <li>
+                @Html.ActionLink("Dashboard", "Dashboard", "Users")
+            </li>
+            <li>
+                @Html.ActionLink("Logout", "Logout", "Accounts")
+            </li>
+        } else {
+            <li>
+                @Html.ActionLink("Login", "Login", "Accounts")
+            </li>
+            <li>
+                @Html.ActionLink("Register", "Register", "Accounts")
+            </li>
+        }
+    </ul>
+</nav>
