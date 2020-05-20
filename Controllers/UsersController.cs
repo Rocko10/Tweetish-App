@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 
@@ -17,7 +17,8 @@ namespace TweetishApp.Controllers
         [Authorize]
         public IActionResult Dashboard()
         {
-            return View();
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return View("Dashboard", userId);
         }
     }
 }

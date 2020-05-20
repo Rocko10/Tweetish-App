@@ -10,7 +10,8 @@
     "react-dom": "^16.13.1"
   },
   "scripts": {
-    "build-tweet-create": "parcel build ./wwwroot/js/tweets/create/Main.jsx --out-dir ./wwwroot/dist/js/tweets/create/"
+    "build-tweet-create": "parcel build ./wwwroot/js/tweets/create/Main.jsx --out-dir ./wwwroot/dist/js/tweets/create/",
+    "build-list-own-tweets": "parcel build ./wwwroot/js/tweets/listOwn/Main.jsx --out-dir ./wwwroot/dist/js/tweets/listOwn/"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
