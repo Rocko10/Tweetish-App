@@ -38,6 +38,7 @@ export default class TweetCreationLayout extends React.Component {
         }
         
         this.setState({text: ''})
+        window.dispatchEvent(new Event('tweet-created'))
     }
 
     render() {

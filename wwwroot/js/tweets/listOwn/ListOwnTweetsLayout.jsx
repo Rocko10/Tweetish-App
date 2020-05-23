@@ -16,6 +16,7 @@ export default class ListOwnTweetsLayout extends React.Component {
 
     componentDidMount() {
         this.fetchOwnTweets(this.userId)
+        window.addEventListener('tweet-created', e => {this.fetchOwnTweets(this.userId)})
     }
 
     async fetchOwnTweets() {
