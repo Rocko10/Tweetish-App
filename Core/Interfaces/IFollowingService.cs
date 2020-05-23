@@ -9,6 +9,7 @@ namespace TweetishApp.Core.Interfaces
         Task<List<Following>> GetAllFollowersOf(string userId);
         Task<List<Following>> GetAllFolloweesFrom(string userId);
         Task<Following> Create(Following folowing);
+        Task<List<Tweet>> GetFolloweesTweets(string userId);
         Task Remove(Following following);
     }
 }

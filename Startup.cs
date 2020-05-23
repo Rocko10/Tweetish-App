@@ -40,7 +40,9 @@ namespace TweetishApp
             });
 
             services.AddScoped<ITweetRepository, TweetRepository>();
-            services.AddScoped<TweetService>();
+            services.AddScoped<ITweetService, TweetService>();
+            services.AddScoped<IFollowingRepository, FollowingRepository>();
+            services.AddScoped<IFollowingService, FollowingService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

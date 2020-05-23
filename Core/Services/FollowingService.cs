@@ -30,6 +30,7 @@ namespace TweetishApp.Core.Services
             return await _repository.GetAllFolloweesFrom(userId);
         }
 
+        // Given an userId, returns tweets of the people who follow that userId
         public async Task<List<Tweet>> GetFolloweesTweets(string userId)
         {
             List<Following> followees = await this.GetAllFolloweesFrom(userId);
