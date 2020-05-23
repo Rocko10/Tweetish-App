@@ -6,7 +6,7 @@ using TweetishApp.Models;
 
 namespace TweetishApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ApplicationController
     {
         private readonly ILogger<HomeController> _logger;
 

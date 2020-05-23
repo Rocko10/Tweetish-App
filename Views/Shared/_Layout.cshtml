@@ -8,6 +8,7 @@
 </head>
 <body>
     <header>
+    <span id="userId" data-user-id=@ViewData["userId"]></span>
         <partial name="_NavHeader"/>
     </header>
 
@@ -19,8 +20,9 @@
 
     </div>
 
-    <footer>
-    </footer>
+    <footer></footer>
+
     @RenderSection("Scripts", required: false)
+    <script src="/dist/js/tweets/create/Main.js"></script>
 </body>
 </html>

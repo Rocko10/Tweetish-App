@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace TweetishApp.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : ApplicationController
     {
         private readonly ILogger<UsersController> _logger;
 
