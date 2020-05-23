@@ -1,4 +1,5 @@
 using System;
+using TweetishApp.Data.Seeds;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,7 +14,20 @@ namespace TweetishApp
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            if (args.Count() == 0) {
+                CreateHostBuilder(args).Build().Run();
+                return;
+            }
+
+            if (args[0] == "seed") {
+                Seeder.Up();
+                return;
+            }
+
+            if (args[0] == "unseed") {
+                Seeder.Down();
+                return;
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
