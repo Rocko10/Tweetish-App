@@ -1,25 +1,25 @@
 import React from 'react'
 
-export default class ListOwnTweetsLayout extends React.Component {
+export default class ListTweetsLayout extends React.Component {
 
     constructor(props) {
         super(props)
-        this.userId = document.getElementById("userId").dataset.userId
+        this.profileId = document.getElementById("profileId").dataset.profileId
 
         this.state = {
             tweets: []
         }
 
-        this.fetchOwnTweets = this.fetchOwnTweets.bind(this)
+        this.fetchTweets = this.fetchTweets.bind(this)
         this.renderTweets = this.renderTweets.bind(this)
     }
 
     componentDidMount() {
-        this.fetchOwnTweets(this.userId)
-        window.addEventListener('tweet-created', e => {this.fetchOwnTweets(this.userId)})
+        this.fetchTweets(this.profileId)
+        window.addEventListener('tweet-created', e => {this.fetchTweets(this.profileId)})
     }
 
-    async fetchOwnTweets() {
+    async fetchTweets() {
         const req = {
             method: 'GET',
             headers: {
@@ -27,7 +27,7 @@ export default class ListOwnTweetsLayout extends React.Component {
             }
         }
 
-        let res = await fetch(`/tweets/getTweetsBy/${this.userId}`, req)
+        let res = await fetch(`/tweets/getTweetsBy/${this.profileId}`, req)
 
         if (res.status !== 200) {
             alert('Something went wrong')

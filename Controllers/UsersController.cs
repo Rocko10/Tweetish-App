@@ -44,9 +44,7 @@ namespace TweetishApp.Controllers
                 return NotFound();
             }
 
-            List<Tweet> tweets = await _tweetService.GetTweetsBy(userId);
-
-            return Ok(new UserProfileVM(user.Id, user.Nickname, tweets));
+            return View(new UserProfileVM(user.Id, user.Nickname));
         }
     }
 }

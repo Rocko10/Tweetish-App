@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using TweetishApp.Core.Entities;
-using TweetishApp.Core.Services;
+using TweetishApp.Core.Interfaces;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
@@ -11,9 +11,9 @@ namespace TweetishApp.Controllers
     public class TweetsController : Controller
     {
         private readonly ILogger<TweetsController> _logger;
-        private readonly TweetService _tweetService;
+        private readonly ITweetService _tweetService;
 
-        public TweetsController(ILogger<TweetsController> logger, TweetService tweetService)
+        public TweetsController(ILogger<TweetsController> logger, ITweetService tweetService)
         {
             _logger = logger;
             _tweetService = tweetService;

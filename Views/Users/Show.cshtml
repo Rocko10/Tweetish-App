@@ -1,0 +1,10 @@
+@model TweetishApp.Models.UserProfileVM
+
+<h1>@Model.Nickname</h1>
+
+<span data-profile-id="@Model.UserId" id="profileId"></span>
+<div id="app"></div>
+
+@section Scripts {
+    <script src="/dist/js/tweets/list/Main.js"></script>
+}
