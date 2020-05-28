@@ -9,7 +9,7 @@ using TweetishApp.Data;
 namespace TweetishApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200517205329_Initial")]
+    [Migration("20200528142206_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,7 +234,8 @@ namespace TweetishApp.Migrations
 
                     b.HasIndex("FolloweeId");
 
-                    b.HasIndex("FollowerId");
+                    b.HasIndex("FollowerId", "FolloweeId")
+                        .IsUnique();
 
                     b.ToTable("followings");
                 });

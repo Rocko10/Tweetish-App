@@ -53,5 +53,7 @@ namespace TweetishApp.Core.Services
         {
             await _repository.Remove(following);
         }
+
+        // TODO: add mehtod to check if a following exists
     }
 }

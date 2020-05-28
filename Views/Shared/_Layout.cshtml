@@ -23,6 +23,9 @@
     <footer></footer>
 
     @RenderSection("Scripts", required: false)
-    <script src="/dist/js/tweets/create/Main.js"></script>
+
+    @if (User.Identity.IsAuthenticated){
+        <script src="/dist/js/tweets/create/Main.js"></script>
+    }
 </body>
 </html>

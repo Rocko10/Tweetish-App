@@ -232,7 +232,8 @@ namespace TweetishApp.Migrations
 
                     b.HasIndex("FolloweeId");
 
-                    b.HasIndex("FollowerId");
+                    b.HasIndex("FollowerId", "FolloweeId")
+                        .IsUnique();
 
                     b.ToTable("followings");
                 });

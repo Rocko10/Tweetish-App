@@ -10,6 +10,7 @@ namespace TweetishApp.Controllers
 {
     public class FollowingsController : Controller
     {
+        // TODO: Add endpoint to check if user already follows another
         private readonly ILogger<FollowingsController> _logger;
         private readonly IFollowingService _followingService;
 

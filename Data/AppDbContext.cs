@@ -36,6 +36,11 @@ namespace TweetishApp.Data
             .HasOne(r => r.User)
             .WithMany(u => u.Reactions)
             .HasForeignKey(r => r.UserId);
+
+            // Constraints
+            builder.Entity<FollowingModel>()
+            .HasIndex(f => new {f.FollowerId, f.FolloweeId})
+            .IsUnique();
         }
 
         public DbSet<TweetModel> Tweet {get; set;}

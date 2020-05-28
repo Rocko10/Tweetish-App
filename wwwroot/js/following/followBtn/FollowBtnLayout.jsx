@@ -1,6 +1,7 @@
 import React from 'react'
 
 export default class FollowBtnLayout extends React.Component {
+    //TODO: Check if a following exist
 
     constructor(props) {
         super(props)

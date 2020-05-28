@@ -328,9 +328,10 @@ namespace TweetishApp.Migrations
                 column: "FolloweeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_followings_FollowerId",
+                name: "IX_followings_FollowerId_FolloweeId",
                 table: "followings",
-                column: "FollowerId");
+                columns: new[] { "FollowerId", "FolloweeId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_retweets_TweetId",
