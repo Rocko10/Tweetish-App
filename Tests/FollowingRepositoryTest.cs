@@ -124,5 +124,21 @@ namespace TweetishApp.Data
                 await _repository.Remove(new Following {FollowerId = "1", FolloweeId = "2"});
             });
         }
+
+        [Test]
+        public async Task IsCheckingExistFollowingInRepo()
+        {
+            FollowingModel model = new FollowingModel {FollowerId = "11", FolloweeId = "1"};
+            _dbContext.Add<FollowingModel>(model);
+            _dbContext.SaveChanges();
+
+            Following f = new Following {FollowerId = "11", FolloweeId = "1"};
+            bool exist = await _repository.ExistFollowing(f);
+            Assert.IsTrue(exist);
+
+            f.FolloweeId = "199";
+            exist = await _repository.ExistFollowing(f);
+            Assert.IsFalse(exist);
+        }
     }
 }

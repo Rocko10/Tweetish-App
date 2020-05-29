@@ -58,7 +58,7 @@ namespace TweetishApp.Data
 
         public async Task<Following> Create(Following following)
         {
-            // TODO: Add DB constraint to not allow duplicate following
+            // TODO: Handle Exception for multiple entries
             AppUser follower = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == following.FollowerId);
 
             if (follower == null) {
@@ -99,6 +99,18 @@ namespace TweetishApp.Data
 
             _dbContext.Following.Remove(model);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> ExistFollowing(Following following)
+        {
+            FollowingModel model = await _dbContext.Following
+            .FirstOrDefaultAsync(f => f.FollowerId == following.FollowerId && f.FolloweeId == following.FolloweeId);
+
+            if (model == null) {
+                return false;
+            }
+
+            return true;
         }
     }
 

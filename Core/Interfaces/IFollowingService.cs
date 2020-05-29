@@ -11,5 +11,6 @@ namespace TweetishApp.Core.Interfaces
         Task<Following> Create(Following folowing);
         Task<List<Tweet>> GetFolloweesTweets(string userId);
         Task Remove(Following following);
+        Task<bool> ExistFollowing(Following following);
     }
 }

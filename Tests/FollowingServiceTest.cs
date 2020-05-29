@@ -48,6 +48,10 @@ namespace TweetishApp.Core.Services
             repoMock.Setup(r => r.GetAllFolloweesFrom("20"))
             .Returns(Task.FromResult(followees));
 
+            // repoMock.Setup(r => r.ExistFollowing(new Following {FollowerId = "11", FolloweeId = "1"}))
+            repoMock.Setup(r => r.ExistFollowing(It.IsAny<Following>()))
+            .Returns(Task.FromResult(true));
+
             _repository = repoMock.Object;
 
             _service = new FollowingService(_repository, tweetServiceMock.Object);
@@ -74,6 +78,15 @@ namespace TweetishApp.Core.Services
             Assert.AreEqual("2", tweets[1].UserId);
             Assert.AreEqual("Third", tweets[2].Text);
             Assert.AreEqual("3", tweets[2].UserId);
+        }
+        
+        [Test]
+        public async Task IsCheckingIfExistFollowing()
+        {
+            Following following = new Following {FollowerId = "11", FolloweeId = "1"};
+
+            bool exist = await _service.ExistFollowing(following);
+            Assert.IsTrue(exist);
         }
     }
 }
