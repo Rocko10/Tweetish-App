@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TweetishApp.Core.Services;
 using TweetishApp.Core.Interfaces;
 using TweetishApp.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +47,18 @@ namespace TweetishApp.Controllers
             }
 
             return View(new UserProfileVM(user.Id, user.Nickname));
+        }
+
+        [Route("/users/options/{nicknameGuess}")]
+        public  IActionResult GetNicknameOptions(string nicknameGuess)
+        {
+            IQueryable<string> query = from u in _userManager.Users
+            where EF.Functions.Like(u.Nickname, $"%{nicknameGuess}%")
+            select u.Nickname;
+
+            List<string> options = query.ToList();
+
+            return Json(options);
         }
     }
 }
