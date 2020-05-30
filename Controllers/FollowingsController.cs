@@ -34,5 +34,15 @@ namespace TweetishApp.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("/followings/exist/{followerId}/{followeeId}")]
+        public async Task<IActionResult> ExistFollowing(string followerId, string followeeId)
+        {
+            bool exist = await _followingService
+            .ExistFollowing(new Following { FollowerId = followerId, FolloweeId = followeeId});
+
+            return Json(exist);
+        }
     }
 }
