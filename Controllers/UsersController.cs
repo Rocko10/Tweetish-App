@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TweetishApp.Models;
 using System.Collections.Generic;
+using System;
 using TweetishApp.Core.Services;
 using TweetishApp.Core.Interfaces;
 using TweetishApp.Core.Entities;
@@ -52,11 +53,11 @@ namespace TweetishApp.Controllers
         [Route("/users/options/{nicknameGuess}")]
         public  IActionResult GetNicknameOptions(string nicknameGuess)
         {
-            IQueryable<string> query = from u in _userManager.Users
+            IQueryable<Tuple<string, string>> query = from u in _userManager.Users
             where EF.Functions.Like(u.Nickname, $"%{nicknameGuess}%")
-            select u.Nickname;
+            select new Tuple<string, string>(u.Nickname, u.Id);
 
-            List<string> options = query.ToList();
+            List<Tuple<string, string>> options = query.ToList();
 
             return Json(options);
         }
