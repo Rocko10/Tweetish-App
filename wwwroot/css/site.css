@@ -1,9 +1,26 @@
 ﻿* {
     font-family: Verdana;
 }
-
 /* Header */
 nav li{
     display: inline-block;
 }
 /*Header*/
+
+/* Tweet */
+.tweet {
+    margin: 5px;
+    border: 2px solid blue;
+}
+.tweet .nickname {
+    font-size: medium;
+}
+.tweet p {
+    font-size: large;
+}
+.tweet .createdAt {
+    color: gray;
+    font-size: small;
+    float: right;
+}
+/*Tweet*/

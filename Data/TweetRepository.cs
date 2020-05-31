@@ -85,6 +85,12 @@ namespace TweetishApp.Data
 
         public async Task<List<Tweet>> GetTweetsBy(string userId)
         {
+            AppUser user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null) {
+                throw new ArgumentNullException("User not found");
+            }
+
             List<TweetModel> models = await _dbContext.Tweet
             .Where(t => t.UserId == userId)
             .ToListAsync();
@@ -96,6 +102,7 @@ namespace TweetishApp.Data
                 {
                     Id = m.Id,
                     UserId = m.UserId,
+                    Nickname = user.Nickname,
                     Text = m.Text,
                     CreatedAt = m.CreatedAt,
                     UpdatedAt = m.UpdatedAt

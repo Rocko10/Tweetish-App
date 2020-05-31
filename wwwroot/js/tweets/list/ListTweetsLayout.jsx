@@ -1,4 +1,5 @@
 import React from 'react'
+import Tweet from './Tweet'
 
 export default class ListTweetsLayout extends React.Component {
 
@@ -41,7 +42,7 @@ export default class ListTweetsLayout extends React.Component {
 
     renderTweets() {
         const tweets = this.state.tweets.map(t => {
-            return <p>{t.text}</p>
+            return <Tweet tweet={t}/>
         })
 
         return <div className="list-tweet-container">{tweets}</div>

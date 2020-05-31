@@ -37,7 +37,13 @@ namespace TweetishApp.Controllers
         [Route("/tweets/getTweetsBy/{userId}")]
         public async Task<IActionResult> GetTweetsBy(string userId)
         {
-            List<Tweet> tweets = await _tweetService.GetTweetsBy(userId);
+            List<Tweet> tweets = new List<Tweet>();
+
+            try {
+                tweets = await _tweetService.GetTweetsBy(userId);
+            } catch (ArgumentNullException e) {
+                 _logger.LogError(e.Message);
+            }
 
             return Json(tweets);
         }
