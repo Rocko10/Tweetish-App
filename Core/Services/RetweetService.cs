@@ -1,4 +1,3 @@
-using TweetishApp.Data;
 using System.Threading.Tasks;
 using TweetishApp.Core.Entities;
 using TweetishApp.Core.Interfaces;
@@ -7,9 +6,9 @@ namespace TweetishApp.Core.Services
 {
     public class RetweetService : IRetweetService
     {
-        private readonly RetweetRepository _repository;
+        private readonly IRetweetRepository _repository;
 
-        public RetweetService(RetweetRepository repository)
+        public RetweetService(IRetweetRepository repository)
         {
             _repository = repository;
         }

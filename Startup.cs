@@ -41,6 +41,8 @@ namespace TweetishApp
 
             services.AddScoped<ITweetRepository, TweetRepository>();
             services.AddScoped<ITweetService, TweetService>();
+            services.AddScoped<IRetweetRepository, RetweetRepository>();
+            services.AddScoped<IRetweetService, RetweetService>();
             services.AddScoped<IFollowingRepository, FollowingRepository>();
             services.AddScoped<IFollowingService, FollowingService>();
         }

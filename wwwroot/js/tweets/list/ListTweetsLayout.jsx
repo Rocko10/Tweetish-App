@@ -6,6 +6,7 @@ export default class ListTweetsLayout extends React.Component {
     constructor(props) {
         super(props)
         this.profileId = document.getElementById("profileId").dataset.profileId
+        this.userId = document.getElementById('userId').dataset.userId
 
         this.state = {
             tweets: []
@@ -42,7 +43,7 @@ export default class ListTweetsLayout extends React.Component {
 
     renderTweets() {
         const tweets = this.state.tweets.map(t => {
-            return <Tweet tweet={t}/>
+            return <Tweet tweet={t} userId={this.userId}/>
         })
 
         return <div className="list-tweet-container">{tweets}</div>

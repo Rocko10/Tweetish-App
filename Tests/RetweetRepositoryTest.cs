@@ -157,7 +157,7 @@ namespace TweetishApp.Data
         }
 
         [Test]
-        public async Task IsThrowingOnRetweetOwnTweetInToggle()
+        public void IsThrowingOnRetweetOwnTweetInToggle()
         {
             AppUser userModel = new AppUser { Nickname = "marcow" };
             _dbContext.Users.Add(userModel);

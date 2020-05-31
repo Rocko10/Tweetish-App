@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using TweetishApp.Core.Entities;
 using TweetishApp.Core.Interfaces;
 using System.Threading.Tasks;
@@ -23,7 +24,13 @@ namespace TweetishApp.Controllers
         {
             Retweet retweet = new Retweet {UserId = profileId, TweetId = tweetId};
 
-            await _retweetService.Toggle(retweet); 
+            try {
+                await _retweetService.Toggle(retweet); 
+            } catch (ArgumentNullException e) { 
+                _logger.LogInformation(e.Message);
+
+                return BadRequest();
+            }
 
             return Ok();
         }
