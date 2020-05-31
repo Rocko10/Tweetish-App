@@ -51,7 +51,7 @@ export default class SearchUsersLayout extends React.Component {
 
     render() {
         return <div>
-            <span>Search Users</span>
+            <label>Search Users</label>
             <input onChange={this.updateNicknameInput} value={this.state.nicknameGuess} type="text"/>
             <select value={this.state.selectedNickname} onClick={this.handleSelectedNickname}>
                 {this.state.nicknames}

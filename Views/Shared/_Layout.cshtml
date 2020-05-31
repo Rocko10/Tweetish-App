@@ -3,14 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - TweetishApp</title>
+    <title>TweetishApp</title>
+    <link rel="stylesheet" href="/css/grid.css">
     <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
     <header>
-    <span id="userId" data-user-id=@ViewData["userId"]></span>
+        <span id="userId" data-user-id=@ViewData["userId"]></span>
         <partial name="_NavHeader"/>
     </header>
+
+    <div class="grid">
+        <div id="create-tweet-component" class="grid__col grid__col--1-of-2"> </div>
+
+        <div id="search-users-component" class="grid__col grid__col--1-of-2"> </div>
+    </div>
 
     <partial name="_ErrorMsg"/>
 
