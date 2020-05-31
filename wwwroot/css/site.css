@@ -1,4 +1,8 @@
-﻿/* Header */
+﻿* {
+    font-family: Verdana;
+}
+
+/* Header */
 nav li{
     display: inline-block;
 }
