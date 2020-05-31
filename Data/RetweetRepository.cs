@@ -59,6 +59,19 @@ namespace TweetishApp.Data
 
         public async Task Toggle(Retweet retweet)
         {
+            AppUser user = _dbContext.Users.FirstOrDefault(u => u.Id == retweet.UserId);
+
+            if (user == null) {
+                throw new ArgumentNullException("User not found");
+            }
+
+            TweetModel tweetModel = _dbContext.Tweet
+            .FirstOrDefault(t => t.Id == retweet.TweetId && t.UserId != retweet.UserId);
+
+            if (tweetModel == null) {
+                throw new ArgumentNullException("Invalid tweet");
+            }
+
             RetweetModel model = await _dbContext.Retweet
             .FirstOrDefaultAsync(r => r.UserId == retweet.UserId && r.TweetId == retweet.TweetId);
 

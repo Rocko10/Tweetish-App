@@ -38,6 +38,13 @@ namespace TweetishApp.Data
                 _dbContext.Remove<RetweetModel>(m);
                 _dbContext.SaveChanges();
             }
+
+            List<TweetModel> tweets = _dbContext.Tweet.ToList();
+
+            foreach (TweetModel t in tweets) {
+                _dbContext.Remove<TweetModel>(t);
+                _dbContext.SaveChanges();
+            }
         }
 
         [Test]
@@ -103,9 +110,19 @@ namespace TweetishApp.Data
         [Test]
         public async Task IsTogglingRetweetInRepository()
         {
+            AppUser user1 = new AppUser {Nickname = "Jhon"};
+            AppUser user2 = new AppUser {Nickname = "Stu"};
+            _dbContext.Add<AppUser>(user1);
+            _dbContext.Add<AppUser>(user2);
+
+            TweetModel tweetModel = new TweetModel {UserId = user1.Id, Text = "Super text"};
+
+            _dbContext.Add<TweetModel>(tweetModel);
+            _dbContext.SaveChanges();
+
             Retweet retweet = new Retweet {
-                UserId = "123",
-                TweetId = 1
+                UserId = user2.Id,
+                TweetId = tweetModel.Id
             };
 
             List<RetweetModel> models = _dbContext.Retweet.ToList();
@@ -137,6 +154,23 @@ namespace TweetishApp.Data
             retweet = await _repository.GetInfo(retweet);
             Assert.AreEqual(userModel.Id, retweet.User.Id);
             Assert.AreEqual(tweetModel.Text, retweet.Tweet.Text);
+        }
+
+        [Test]
+        public async Task IsThrowingOnRetweetOwnTweetInToggle()
+        {
+            AppUser userModel = new AppUser { Nickname = "marcow" };
+            _dbContext.Users.Add(userModel);
+            Assert.NotNull(userModel.Id);
+
+            TweetModel tweetModel = new TweetModel { UserId = userModel.Id, Text = "Super tweet!" };
+            _dbContext.Add<TweetModel>(tweetModel);
+            _dbContext.SaveChanges();
+
+            Assert.ThrowsAsync<ArgumentNullException>(async () => {
+                Retweet retweet = new Retweet {UserId = userModel.Id, TweetId = tweetModel.Id};
+                await _repository.Toggle(retweet);
+            });
         }
     }
 }
