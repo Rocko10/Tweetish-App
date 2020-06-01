@@ -1,12 +1,8 @@
-using TweetishApp.Data;
 using TweetishApp.Models;
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using TweetishApp.Core.Entities;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
 namespace TweetishApp.Data.Seeds
 {
@@ -20,6 +16,12 @@ namespace TweetishApp.Data.Seeds
             .Options;
             AppDbContext dbContext = new AppDbContext(options);
 
+            ReactionModel heart = new ReactionModel {Name = "Heart"};
+            ReactionModel star = new ReactionModel {Name = "Star"};
+            dbContext.Add<ReactionModel>(heart);
+            dbContext.Add<ReactionModel>(star);
+            dbContext.SaveChanges();
+
             AppUser u1 = new AppUser {Nickname = "Joe" , UserName = "Joe", NormalizedUserName = "JOE", PasswordHash = "AQAAAAEAACcQAAAAEA6OCQQajV1pU1Yn8ockUkVekZo63ozhhE0nCndh5O3NLeikSeuJapJo1f4NyGFu5A=="};
             AppUser u2 = new AppUser {Nickname = "Mike", UserName = "Mike", NormalizedUserName = "MIKE",PasswordHash = "AQAAAAEAACcQAAAAEA6OCQQajV1pU1Yn8ockUkVekZo63ozhhE0nCndh5O3NLeikSeuJapJo1f4NyGFu5A=="};
             AppUser u3 = new AppUser {Nickname = "Tim", UserName = "Tim" , NormalizedUserName = "TIM", PasswordHash = "AQAAAAEAACcQAAAAEA6OCQQajV1pU1Yn8ockUkVekZo63ozhhE0nCndh5O3NLeikSeuJapJo1f4NyGFu5A=="};
@@ -27,7 +29,6 @@ namespace TweetishApp.Data.Seeds
             dbContext.Add<AppUser>(u2);
             dbContext.Add<AppUser>(u3);
             dbContext.SaveChanges();
-
 
             TweetModel t1 = new TweetModel {UserId = u1.Id, Text = "Robots are cool!"};
             TweetModel t2 = new TweetModel {UserId = u1.Id, Text = "Like turtles!"};
