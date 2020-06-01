@@ -28,5 +28,19 @@ namespace TweetishApp.Data
 
             return reaction;
         }
+
+        public async Task<List<Reaction>> GetAll()
+        {
+            List<ReactionModel> models = await _dbContext.Reaction.ToListAsync();
+            List<Reaction> reactions = new List<Reaction>();
+
+            foreach (ReactionModel m in models) {
+                Reaction r = new Reaction(m.Name);
+                r.Id = m.Id;
+                reactions.Add(r);
+            }
+
+            return reactions;
+        }
     }
 }
