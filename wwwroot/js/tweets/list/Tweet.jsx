@@ -20,6 +20,18 @@ export default class Tweet extends React.Component {
         alert('Succesful retweet toggle')
     }
 
+    renderReactions() {
+        return this.props.reactions.map(r => {
+            let text = 'favorite'
+
+            if (r.name == 'Star') {
+                text = 'Save'
+            }
+
+            return <button reactionId={r.id}>{text}</button>
+        })
+    }
+
     render() {
         const tweet = this.props.tweet
 
@@ -31,6 +43,7 @@ export default class Tweet extends React.Component {
             </p>
             <div className="controls">
                 <button onClick={this.sendRetweet}>Retweet</button>
+                {this.renderReactions()}
             </div>
         </div>
     }
