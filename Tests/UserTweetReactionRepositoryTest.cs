@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using TweetishApp.Core.Entities;
 using System.Collections.Generic;
 using TweetishApp.Models;
@@ -33,6 +34,22 @@ namespace TweetishApp.Data
 
             foreach (UserTweetReactionModel m in models) {
                 _dbContext.Remove<UserTweetReactionModel>(m);
+            }
+
+            List<AppUser> users = _dbContext.Users.ToList();
+            List<ReactionModel> reactions = _dbContext.Reaction.ToList();
+            List<TweetModel> tweets = _dbContext.Tweet.ToList();
+
+            foreach (AppUser u in users) {
+                _dbContext.Remove<AppUser>(u);
+            }
+
+            foreach (ReactionModel r in reactions) {
+                _dbContext.Remove<ReactionModel>(r);
+            }
+
+            foreach (TweetModel t in tweets) {
+                _dbContext.Remove<TweetModel>(t);
             }
 
             _dbContext.SaveChanges();
@@ -79,6 +96,31 @@ namespace TweetishApp.Data
             reaction = await _repository.Toggle(reaction);
             Assert.IsNull(reaction);
             models = await _dbContext.UserTweetReaction.ToListAsync();
+            Assert.AreEqual(0, models.Count);
+        }
+
+        [Test]
+        public async Task IsRemovingUserTweetReactionInToggle()
+        {
+            this.populate();
+
+            List<UserTweetReactionModel> models = _dbContext.UserTweetReaction.ToList();
+            Assert.AreEqual(0, models.Count);
+
+            AppUser user = _dbContext.Users.FirstOrDefault(u => u.Nickname == "marcow");
+            TweetModel tweet = _dbContext.Tweet.FirstOrDefault(t => t.UserId == user.Id);
+            ReactionModel reaction = _dbContext.Reaction.FirstOrDefault(r => r.Name == "Star");
+
+            UserTweetReaction userTweetReaction = new UserTweetReaction 
+            { UserId = user.Id, TweetId = tweet.Id, ReactionId = reaction.Id };
+
+            await _repository.Toggle(userTweetReaction);
+            models = _dbContext.UserTweetReaction.ToList();
+            Assert.AreEqual(1, models.Count);
+
+            userTweetReaction.Id = 0;
+            await _repository.Toggle(userTweetReaction);
+            models = _dbContext.UserTweetReaction.ToList();
             Assert.AreEqual(0, models.Count);
         }
     }

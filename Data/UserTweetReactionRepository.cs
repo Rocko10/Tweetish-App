@@ -28,19 +28,14 @@ namespace TweetishApp.Data
                 throw new ArgumentNullException("Invalid input");
             }
 
-            UserTweetReactionModel model;
+            UserTweetReactionModel model = await _dbContext.UserTweetReaction
+            .FirstOrDefaultAsync(u => u.UserId == userTweetReaction.UserId && u.TweetId == userTweetReaction.TweetId && u.ReactionId == userTweetReaction.ReactionId);
 
-            if (userTweetReaction.Id > 0) {
-                model = await _dbContext.UserTweetReaction.FirstOrDefaultAsync(u => u.Id == userTweetReaction.Id);
+            if (model != null) {
+                _dbContext.Remove<UserTweetReactionModel>(model);
+                await _dbContext.SaveChangesAsync();
 
-                if (model != null) {
-                    _dbContext.Remove<UserTweetReactionModel>(model);
-                    await _dbContext.SaveChangesAsync();
-
-                    return null;
-                }
-
-                throw new ArgumentNullException("User tweet reaction not found");
+                return null;
             }
 
             model = new UserTweetReactionModel

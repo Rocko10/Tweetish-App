@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace TweetishApp.Core.Services
 {
-    public class UserTweetReactionService
+    public class UserTweetReactionService : IUserTweetReactionService
     {
         private IUserTweetReactionRepository _repository;
 

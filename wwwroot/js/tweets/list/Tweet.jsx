@@ -6,6 +6,7 @@ export default class Tweet extends React.Component {
         super(props)
 
         this.sendRetweet = this.sendRetweet.bind(this)
+        this.sendToggleUserTweetReaction = this.sendToggleUserTweetReaction.bind(this)
     }
 
     async sendRetweet() {
@@ -28,7 +29,26 @@ export default class Tweet extends React.Component {
                 text = 'Save'
             }
 
-            return <button reactionId={r.id}>{text}</button>
+            return <button onClick={e => this.sendToggleUserTweetReaction(this.props.userId, this.props.tweet.id, r.id)}>
+                {text}
+            </button>
+        })
+    }
+
+    sendToggleUserTweetReaction(userId, tweetId, reactionId) {
+        const req = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({userId, tweetId, reactionId})
+        }
+
+        let res = fetch('/userTweetReaction/toggle', req)
+        res.then(data => {
+            if (data.status == 200) {
+                alert('Reaction toggled succesfully')
+            }
         })
     }
 
