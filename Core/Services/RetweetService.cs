@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using TweetishApp.Core.Entities;
 using TweetishApp.Core.Interfaces;
 
@@ -31,6 +32,11 @@ namespace TweetishApp.Core.Services
         public async Task<Retweet> GetInfo(Retweet retweet)
         {
             return await _repository.GetInfo(retweet);
+        }
+
+        public async Task<List<Tweet>> GetRetweetsByUserId(string userId)
+        {
+            return await _repository.GetRetweetsByUserId(userId);
         }
     }
 }

@@ -16,39 +16,40 @@ export default class ListTweetsLayout extends React.Component {
         this.fetchTweets = this.fetchTweets.bind(this)
         this.renderTweets = this.renderTweets.bind(this)
         this.fetchReactions = this.fetchReactions.bind(this)
+        this.fetchRetweets = this.fetchRetweets.bind(this)
     }
 
     componentDidMount() {
         this.fetchTweets(this.profileId)
         this.fetchReactions()
+        this.fetchRetweets()
         window.addEventListener('tweet-created', e => {this.fetchTweets(this.profileId)})
     }
 
-    async fetchTweets() {
-        const req = {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
+    fetchTweets() {
+        fetch(`/tweets/getTweetsBy/${this.profileId}`)
+        .then(res => res.json())
+        .then(tweets => {
+            this.setState({tweets})
+        })
 
-        let res = await fetch(`/tweets/getTweetsBy/${this.profileId}`, req)
-
-        if (res.status !== 200) {
-            alert('Something went wrong')
-            return
-        }
-
-        res = await res.json()
-
-        this.setState({tweets: res})
     }
 
-    async fetchReactions() {
-        let reactions = await fetch('/reactions/getAll')
-        reactions = await reactions.json()
+    fetchRetweets() {
+        fetch(`/retweets/getByUserId/${this.profileId}`)
+        .then(res => res.json())
+        .then(retweets => {
+            let tweets = this.state.tweets
+            this.setState({tweets: tweets.concat(retweets)})
+        })
+    }
 
-        this.setState({reactions})
+    fetchReactions() {
+        fetch('/reactions/getAll')
+        .then(res => res.json())
+        .then(reactions => {
+            this.setState({reactions})
+        })
     }
 
     renderTweets() {

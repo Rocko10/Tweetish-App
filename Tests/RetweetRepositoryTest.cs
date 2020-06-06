@@ -26,7 +26,6 @@ namespace TweetishApp.Data
 
             _dbContext = new AppDbContext(options);
             _repository = new RetweetRepository(_dbContext);
-
         }
 
         [TearDown]
@@ -36,15 +35,35 @@ namespace TweetishApp.Data
             
             foreach (RetweetModel m in models) {
                 _dbContext.Remove<RetweetModel>(m);
-                _dbContext.SaveChanges();
             }
 
             List<TweetModel> tweets = _dbContext.Tweet.ToList();
 
             foreach (TweetModel t in tweets) {
                 _dbContext.Remove<TweetModel>(t);
-                _dbContext.SaveChanges();
             }
+
+            List<AppUser> users = _dbContext.Users.ToList();
+
+            foreach (AppUser u in users) {
+                _dbContext.Remove<AppUser>(u);
+            }
+
+            _dbContext.SaveChanges();
+        }
+
+        private void populate()
+        {
+            AppUser u1 = new AppUser {Nickname = "marcow"};
+            AppUser u2 = new AppUser {Nickname = "joe"};
+
+            _dbContext.Add<AppUser>(u1);
+            _dbContext.Add<AppUser>(u2);
+            _dbContext.SaveChanges();
+
+            TweetModel t1 = new TweetModel {UserId = u1.Id, Text = "I like turtles!"};
+            _dbContext.Add<TweetModel>(t1);
+            _dbContext.SaveChanges();
         }
 
         [Test]
@@ -171,6 +190,27 @@ namespace TweetishApp.Data
                 Retweet retweet = new Retweet {UserId = userModel.Id, TweetId = tweetModel.Id};
                 await _repository.Toggle(retweet);
             });
+        }
+
+        [Test]
+        public async Task IsGettingRetweetsFromUserId()
+        {
+            this.populate();
+            AppUser joe = _dbContext.Users.FirstOrDefault(u => u.Nickname == "joe");
+            AppUser marcow = _dbContext.Users.FirstOrDefault(u => u.Nickname == "marcow");
+            TweetModel t1 = _dbContext.Tweet.FirstOrDefault(t => t.Text == "I like turtles!");
+            Retweet retweet = new Retweet {UserId = joe.Id, TweetId = t1.Id};
+
+            List<RetweetModel> allRetweets = _dbContext.Retweet.ToList();
+            Assert.AreEqual(0, allRetweets.Count);
+
+            await _repository.Create(retweet);
+
+            allRetweets = _dbContext.Retweet.ToList();
+            Assert.AreEqual(1, allRetweets.Count);
+
+            List<Tweet> joeRetweets = await _repository.GetRetweetsByUserId(joe.Id);
+            Assert.AreEqual(1, joeRetweets.Count);
         }
     }
 }

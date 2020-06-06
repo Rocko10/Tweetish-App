@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System;
 using TweetishApp.Core.Entities;
 using TweetishApp.Core.Interfaces;
@@ -33,6 +34,15 @@ namespace TweetishApp.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("/retweets/getByUserId/{userId}")]
+        public async Task<IActionResult> GetRetweetsByUserId(string userId)
+        {
+            List<Tweet> tweets = await _retweetService.GetRetweetsByUserId(userId);
+
+            return Ok(tweets);
         }
     }
 }

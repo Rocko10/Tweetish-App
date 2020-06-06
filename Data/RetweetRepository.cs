@@ -110,5 +110,24 @@ namespace TweetishApp.Data
                 Tweet = new Tweet { Id = model.Tweet.Id, Text = model.Tweet.Text, UserId = model.UserId }
             };
         }
+
+        public async Task<List<Tweet>> GetRetweetsByUserId(string userId)
+        {
+            List<RetweetModel> retweetModels = await _dbContext.Retweet
+            .Include(r => r.Tweet)
+            .ThenInclude(t => t.User)
+            .Where(r => r.UserId == userId)
+            .ToListAsync();
+
+            List<Tweet> tweets = new List<Tweet>();
+
+            foreach (RetweetModel r in retweetModels) {
+                Tweet t = new Tweet 
+                {Id = r.Tweet.Id, UserId = r.Tweet.UserId, Text = r.Tweet.Text, Nickname = r.Tweet.User.Nickname};
+                tweets.Add(t);
+            }
+
+            return tweets;
+        }
     }
 }

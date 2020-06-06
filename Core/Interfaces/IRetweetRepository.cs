@@ -1,4 +1,5 @@
 using TweetishApp.Core.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace TweetishApp.Core.Interfaces
@@ -9,5 +10,6 @@ namespace TweetishApp.Core.Interfaces
         Task Remove(Retweet retweet);
         Task Toggle(Retweet retweet);
         Task<Retweet> GetInfo(Retweet retweet);
+        Task<List<Tweet>> GetRetweetsByUserId(string userId);
     }
 }

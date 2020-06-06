@@ -47,9 +47,14 @@ export default class TweetCreationLayout extends React.Component {
         }
 
         return <div>
-            <label>Tweet </label>
-            <input value={this.state.text} onChange={e => {this.updateField(e.target.value)}} type="text"/>
-            <button onClick={this.sendCreate}>Tweet</button>
+            <label>Tweet</label>
+            <input 
+                value={this.state.text}
+                onChange={e => {this.updateField(e.target.value)}}
+            />
+            <button onClick={this.sendCreate}>
+                Create
+            </button>
         </div>
     }
 
