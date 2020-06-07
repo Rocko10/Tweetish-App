@@ -129,5 +129,17 @@ namespace TweetishApp.Data
 
             return tweets;
         }
+        
+        public async Task<bool> IsRetweeted(string userId, int tweetId)
+        {
+            RetweetModel model = await _dbContext.Retweet
+            .FirstOrDefaultAsync(r => r.UserId == userId && r.TweetId == tweetId);
+
+            if (model == null) {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

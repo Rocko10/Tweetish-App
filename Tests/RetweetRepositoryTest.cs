@@ -54,14 +54,14 @@ namespace TweetishApp.Data
 
         private void populate()
         {
-            AppUser u1 = new AppUser {Nickname = "marcow"};
-            AppUser u2 = new AppUser {Nickname = "joe"};
+            AppUser marcow = new AppUser {Nickname = "marcow"};
+            AppUser joe = new AppUser {Nickname = "joe"};
 
-            _dbContext.Add<AppUser>(u1);
-            _dbContext.Add<AppUser>(u2);
+            _dbContext.Add<AppUser>(marcow);
+            _dbContext.Add<AppUser>(joe);
             _dbContext.SaveChanges();
 
-            TweetModel t1 = new TweetModel {UserId = u1.Id, Text = "I like turtles!"};
+            TweetModel t1 = new TweetModel {UserId = marcow.Id, Text = "I like turtles!"};
             _dbContext.Add<TweetModel>(t1);
             _dbContext.SaveChanges();
         }
@@ -211,6 +211,20 @@ namespace TweetishApp.Data
 
             List<Tweet> joeRetweets = await _repository.GetRetweetsByUserId(joe.Id);
             Assert.AreEqual(1, joeRetweets.Count);
+        }
+
+        [Test]
+        public async Task IsBeingRetweetedByUserId()
+        {
+            this.populate();
+            AppUser joe = _dbContext.Users.FirstOrDefault(u => u.Nickname == "joe");
+            TweetModel t1 = _dbContext.Tweet.FirstOrDefault(t => t.Text == "I like turtles!");
+            Retweet r1 = new Retweet {UserId = joe.Id, TweetId = t1.Id};
+
+            await _repository.Create(r1);
+
+            bool isRetweeted = await _repository.IsRetweeted(joe.Id, t1.Id);
+            Assert.True(isRetweeted);
         }
     }
 }

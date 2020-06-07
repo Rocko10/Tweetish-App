@@ -44,5 +44,14 @@ namespace TweetishApp.Controllers
 
             return Ok(tweets);
         }
+
+        [HttpGet]
+        [Route("/retweets/isRetweeted/{userId}/{tweetId}")]
+        public async Task<IActionResult> IsRetweeted(string userId, int tweetId)
+        {
+            bool response = await _retweetService.IsRetweeted(userId, tweetId);
+
+            return Ok(response);
+        }
     }
 }

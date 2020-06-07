@@ -38,5 +38,10 @@ namespace TweetishApp.Core.Services
         {
             return await _repository.GetRetweetsByUserId(userId);
         }
+
+        public async Task<bool> IsRetweeted(string userId, int tweetId)
+        {
+            return await _repository.IsRetweeted(userId, tweetId);
+        }
     }
 }

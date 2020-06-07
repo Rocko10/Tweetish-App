@@ -7,18 +7,28 @@ export default class Tweet extends React.Component {
 
         this.sendRetweet = this.sendRetweet.bind(this)
         this.sendToggleUserTweetReaction = this.sendToggleUserTweetReaction.bind(this)
+        this.sendIsRetweeted = this.sendIsRetweeted.bind(this)
+
+        this.state = {
+            isRetweeted: false
+        }
     }
 
-    async sendRetweet() {
-        let res = await fetch(`/retweets/toggle/${this.props.userId}/${this.props.tweet.id}`)
+    componentDidMount() {
+        this.sendIsRetweeted()
+    }
 
-        if (res.status == 400) {
-            alert('Cannot retweet your tweet')
+    sendRetweet() {
+        fetch(`/retweets/toggle/${this.props.userId}/${this.props.tweet.id}`)
+        .then(res => {
+            if (res.status == 400) {
+                alert('Cannot retweet your tweet')
 
-            return
-        }
+                return
+            }
 
-        alert('Succesful retweet toggle')
+            alert('Succesful retweet toggle')
+        })
     }
 
     renderReactions() {
@@ -52,6 +62,14 @@ export default class Tweet extends React.Component {
         })
     }
 
+    sendIsRetweeted() {
+        fetch(`/retweets/isRetweeted/${this.props.userId}/${this.props.tweet.id}`)
+        .then(res => res.json())
+        .then(isRetweeted => {
+            this.setState({isRetweeted})
+        })
+    }
+
     render() {
         const tweet = this.props.tweet
 
@@ -62,7 +80,9 @@ export default class Tweet extends React.Component {
                 {tweet.text} 
             </p>
             <div className="controls">
-                <button onClick={this.sendRetweet}>Retweet</button>
+                <button onClick={this.sendRetweet}>
+                    { this.state.isRetweeted ? "Un-Retweet" : "Retweet" }
+                </button>
                 {this.renderReactions()}
             </div>
         </div>

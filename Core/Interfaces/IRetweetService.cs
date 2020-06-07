@@ -11,5 +11,6 @@ namespace TweetishApp.Core.Interfaces
         Task Toggle(Retweet retweet);
         Task<Retweet> GetInfo(Retweet retweet);
         Task<List<Tweet>> GetRetweetsByUserId(string userId);
+        Task<bool> IsRetweeted(string userId, int tweetId);
     }
 }

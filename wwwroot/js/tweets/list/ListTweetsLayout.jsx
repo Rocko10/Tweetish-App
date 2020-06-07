@@ -32,7 +32,6 @@ export default class ListTweetsLayout extends React.Component {
         .then(tweets => {
             this.setState({tweets})
         })
-
     }
 
     fetchRetweets() {
@@ -65,4 +64,5 @@ export default class ListTweetsLayout extends React.Component {
             {this.renderTweets()}
         </div>
     }
+
 }
