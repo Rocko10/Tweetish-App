@@ -32,5 +32,17 @@ namespace TweetishApp.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        [Route("/userTweetReaction/reacted/{userId}/{tweetId}/{reactionId}")]
+        public async Task<IActionResult> Reacted(string userId, int tweetId, int reactionId)
+        {
+            UserTweetReaction userTweetReaction = new UserTweetReaction
+            { UserId = userId, TweetId = tweetId, ReactionId = reactionId };
+
+            bool reacted = await _userTweetReactionService.Reacted(userTweetReaction);
+
+            return Ok(reacted);
+        }
     }
 }

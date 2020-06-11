@@ -55,7 +55,7 @@ namespace TweetishApp.Data
             _dbContext.SaveChanges();
         }
 
-        private void populate()
+        private (AppUser, TweetModel, ReactionModel) populate()
         {
             AppUser user = new AppUser {Nickname = "marcow"};
             ReactionModel reaction = new ReactionModel { Name = "Star" };
@@ -65,6 +65,8 @@ namespace TweetishApp.Data
             TweetModel tweet = new TweetModel {UserId = user.Id, Text = "Super First Tweet"};
             _dbContext.Add<TweetModel>(tweet);
             _dbContext.SaveChanges();
+
+            return (user, tweet, reaction);
         }
 
         [Test]
@@ -122,6 +124,30 @@ namespace TweetishApp.Data
             await _repository.Toggle(userTweetReaction);
             models = _dbContext.UserTweetReaction.ToList();
             Assert.AreEqual(0, models.Count);
+        }
+
+        [Test]
+        public async Task IsUserBeingReactingToTweet()
+        {
+            (AppUser, TweetModel, ReactionModel) data = this.populate();
+            UserTweetReaction reaction = new UserTweetReaction
+            {
+                UserId = data.Item1.Id,
+                TweetId = data.Item2.Id,
+                ReactionId = data.Item3.Id,
+            };
+
+            List<UserTweetReactionModel> models = _dbContext.UserTweetReaction.ToList();
+            Assert.AreEqual(0, models.Count);
+
+            await _repository.Toggle(reaction);
+            models = _dbContext.UserTweetReaction.ToList();
+            Assert.AreEqual(1, models.Count);
+
+            bool reacted = await _repository.Reacted(
+                new UserTweetReaction {UserId = data.Item1.Id, TweetId = data.Item2.Id, ReactionId = data.Item3.Id}
+            );
+            Assert.True(reacted);
         }
     }
 }

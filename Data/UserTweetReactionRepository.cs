@@ -56,5 +56,19 @@ namespace TweetishApp.Data
 
             return userTweetReaction;
         }
+
+        public async Task<bool> Reacted(UserTweetReaction userTweetReaction)
+        {
+            UserTweetReactionModel model = await _dbContext.UserTweetReaction
+            .FirstOrDefaultAsync(u => u.UserId == userTweetReaction.UserId 
+            && u.TweetId == userTweetReaction.TweetId 
+            && u.ReactionId == userTweetReaction.ReactionId);
+
+            if (model == null) {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
