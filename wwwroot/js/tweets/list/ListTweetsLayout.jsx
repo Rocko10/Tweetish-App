@@ -21,16 +21,16 @@ export default class ListTweetsLayout extends React.Component {
 
     componentDidMount() {
         this.fetchTweets(this.profileId)
-        this.fetchReactions()
         this.fetchRetweets()
         window.addEventListener('tweet-created', e => {this.fetchTweets(this.profileId)})
+        window.addEventListener('tweets-fetched', e => {this.fetchReactions()})
     }
 
     fetchTweets() {
         fetch(`/tweets/getTweetsBy/${this.profileId}`)
         .then(res => res.json())
         .then(tweets => {
-            this.setState({tweets})
+            this.setState({tweets: tweets.concat(this.state.tweets)}, () => {window.dispatchEvent(new Event('tweets-fetched'))})
         })
     }
 
@@ -47,13 +47,17 @@ export default class ListTweetsLayout extends React.Component {
         fetch('/reactions/getAll')
         .then(res => res.json())
         .then(reactions => {
-            this.setState({reactions})
+            this.setState({reactions}, () => {window.dispatchEvent(new Event('reactions-fetched'))})
         })
     }
 
     renderTweets() {
         const tweets = this.state.tweets.map(t => {
-            return <Tweet tweet={t} userId={this.userId} reactions={this.state.reactions}/>
+            return <Tweet 
+            tweet={t} 
+            userId={this.userId} 
+            reactions={this.state.reactions}
+            />
         })
 
         return <div className="list-tweet-container">{tweets}</div>

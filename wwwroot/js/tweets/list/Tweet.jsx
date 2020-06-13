@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactionBtn from './ReactionBtn'
 
 export default class Tweet extends React.Component {
     
@@ -6,7 +7,6 @@ export default class Tweet extends React.Component {
         super(props)
 
         this.sendRetweet = this.sendRetweet.bind(this)
-        this.sendToggleUserTweetReaction = this.sendToggleUserTweetReaction.bind(this)
         this.sendIsRetweeted = this.sendIsRetweeted.bind(this)
 
         this.state = {
@@ -32,34 +32,8 @@ export default class Tweet extends React.Component {
     }
 
     renderReactions() {
-        return this.props.reactions.map(r => {
-            let text = 'favorite'
-
-            if (r.name == 'Star') {
-                text = 'Save'
-            }
-
-            return <button onClick={e => this.sendToggleUserTweetReaction(this.props.userId, this.props.tweet.id, r.id)}>
-                {text}
-            </button>
-        })
-    }
-
-    sendToggleUserTweetReaction(userId, tweetId, reactionId) {
-        const req = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({userId, tweetId, reactionId})
-        }
-
-        let res = fetch('/userTweetReaction/toggle', req)
-        res.then(data => {
-            if (data.status == 200) {
-                alert('Reaction toggled succesfully')
-            }
-        })
+        return this.props.reactions
+        .map(r => <ReactionBtn reaction={r} userId={this.props.userId} tweet={this.props.tweet} />)
     }
 
     sendIsRetweeted() {
