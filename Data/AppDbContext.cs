@@ -48,5 +48,6 @@ namespace TweetishApp.Data
         public DbSet<RetweetModel> Retweet {get; set;}
         public DbSet<ReactionModel> Reaction {get; set;}
         public DbSet<UserTweetReactionModel> UserTweetReaction {get; set;}
+        public DbSet<CommentModel> Comment {get; set;}
     }
 }
