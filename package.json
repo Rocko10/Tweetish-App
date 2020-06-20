@@ -13,7 +13,8 @@
     "build-tweet-create": "parcel build ./wwwroot/js/tweets/create/Main.jsx --out-dir ./wwwroot/dist/js/tweets/create/",
     "build-list-tweets": "parcel build ./wwwroot/js/tweets/list/Main.jsx --out-dir ./wwwroot/dist/js/tweets/list/",
     "build-follow-btn": "parcel build ./wwwroot/js/following/followBtn/Main.jsx --out-dir ./wwwroot/dist/js/following/followBtn/",
-    "build-search-users": "parcel build ./wwwroot/js/users/search/Main.jsx --out-dir ./wwwroot/dist/js/users/search/"
+    "build-search-users": "parcel build ./wwwroot/js/users/search/Main.jsx --out-dir ./wwwroot/dist/js/users/search/",
+    "build-create-comment": "parcel build ./wwwroot/js/comments/create/Main.jsx --out-dir ./wwwroot/dist/js/comments/create/"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

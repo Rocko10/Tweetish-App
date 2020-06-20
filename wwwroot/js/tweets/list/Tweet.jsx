@@ -44,6 +44,10 @@ export default class Tweet extends React.Component {
         })
     }
 
+    handleClickComment(tweet) {
+        window.dispatchEvent(new CustomEvent('selectedComment', {detail: {tweetId: tweet.id, text: tweet.text} }))
+    }
+
     render() {
         const tweet = this.props.tweet
 
@@ -53,11 +57,12 @@ export default class Tweet extends React.Component {
             <p>
                 {tweet.text} 
             </p>
-            <div className="controls">
+            <div>
                 <button onClick={this.sendRetweet}>
                     { this.state.isRetweeted ? "Un-Retweet" : "Retweet" }
                 </button>
                 {this.renderReactions()}
+                <button onClick={e => {this.handleClickComment(this.props.tweet)}}>Comment</button>
             </div>
         </div>
     }
