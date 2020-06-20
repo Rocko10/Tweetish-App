@@ -37,7 +37,7 @@ export default class CreateCommentLayout extends React.Component {
             },
             body: JSON.stringify({
                 tweetId: this.state.tweetId,
-                text: this.state.text
+                text: this.state.comment
             })
         }
 

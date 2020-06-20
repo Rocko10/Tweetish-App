@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using TweetishApp.Core.Entities;
 using TweetishApp.Core.Interfaces;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace TweetishApp.Controllers
 {
-    public class CommentsController
+    public class CommentsController : Controller
     {
         private readonly ILogger<CommentsController> _logger;
 
@@ -17,11 +18,10 @@ namespace TweetishApp.Controllers
             _commentService = commentService;
         }
 
-        public void Create([FromBody] Comment comment)
+        [HttpPost]
+        public async Task<Comment> Create([FromBody] Comment comment)
         {
-            _logger.LogInformation($"Comment id: {comment.Id}");
-            _logger.LogInformation($"Comment tweetId: {comment.TweetId}");
-            _logger.LogInformation($"Comment text: {comment.Text}");
+            return await _commentService.Create(comment); 
         }
     }
 }
