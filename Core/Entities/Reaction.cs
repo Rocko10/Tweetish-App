@@ -9,5 +9,7 @@ namespace TweetishApp.Core.Entities
         {
             Name = name;
         }
+        
+        public Reaction() {}
     }
 }
