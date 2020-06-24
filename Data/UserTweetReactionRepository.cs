@@ -57,7 +57,7 @@ namespace TweetishApp.Data
             return userTweetReaction;
         }
 
-        public async Task<bool> Reacted(UserTweetReaction userTweetReaction)
+        public async Task<UserTweetReaction> Reacted(UserTweetReaction userTweetReaction)
         {
             UserTweetReactionModel model = await _dbContext.UserTweetReaction
             .FirstOrDefaultAsync(u => u.UserId == userTweetReaction.UserId 
@@ -65,10 +65,14 @@ namespace TweetishApp.Data
             && u.ReactionId == userTweetReaction.ReactionId);
 
             if (model == null) {
-                return false;
+                userTweetReaction.Reacted = false;
+
+                return userTweetReaction;
             }
 
-            return true;
+            userTweetReaction.Reacted = true;
+
+            return userTweetReaction;
         }
     }
 }

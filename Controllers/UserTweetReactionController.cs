@@ -40,9 +40,9 @@ namespace TweetishApp.Controllers
             UserTweetReaction userTweetReaction = new UserTweetReaction
             { UserId = userId, TweetId = tweetId, ReactionId = reactionId };
 
-            bool reacted = await _userTweetReactionService.Reacted(userTweetReaction);
+            userTweetReaction = await _userTweetReactionService.Reacted(userTweetReaction);
 
-            return Ok(reacted);
+            return Ok(userTweetReaction);
         }
     }
 }

@@ -144,10 +144,10 @@ namespace TweetishApp.Data
             models = _dbContext.UserTweetReaction.ToList();
             Assert.AreEqual(1, models.Count);
 
-            bool reacted = await _repository.Reacted(
+            UserTweetReaction reacted = await _repository.Reacted(
                 new UserTweetReaction {UserId = data.Item1.Id, TweetId = data.Item2.Id, ReactionId = data.Item3.Id}
             );
-            Assert.True(reacted);
+            Assert.True(reacted.Reacted);
         }
     }
 }

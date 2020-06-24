@@ -13,5 +13,6 @@ namespace TweetishApp.Core.Entities
 
         public int ReactionId {get; set;}
         public Reaction Reaction {get; set;}
+        public bool Reacted {get; set;} = false;
     }
 }

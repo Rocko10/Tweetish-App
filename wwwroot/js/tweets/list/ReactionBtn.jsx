@@ -20,11 +20,11 @@ export default class ReactionBtn extends React.Component
     sendReacted() {
         fetch(`/userTweetReaction/reacted/${this.props.userId}/${this.props.tweet.id}/${this.props.reaction.id}`)
         .then(res => res.json())
-        .then(reacted => {
+        .then(reaction => {
             let text = ''
 
             if (this.props.reaction.name === 'Heart') {
-                if (reacted) {
+                if (reaction.reacted) {
                     text = 'Un-Heart'
                 } else {
                     text = 'Heart'
@@ -32,7 +32,7 @@ export default class ReactionBtn extends React.Component
             }
 
             if (this.props.reaction.name === 'Star') {
-                if (reacted) {
+                if (reaction.reacted) {
                     text = 'Un-Star'
                 } else {
                     text = 'Star'

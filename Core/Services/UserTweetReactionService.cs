@@ -18,7 +18,7 @@ namespace TweetishApp.Core.Services
             return await _repository.Toggle(userTweetReaction);
         }
 
-        public async Task<bool> Reacted(UserTweetReaction userTweetReaction)
+        public async Task<UserTweetReaction> Reacted(UserTweetReaction userTweetReaction)
         {
             return await _repository.Reacted(userTweetReaction);
         }
