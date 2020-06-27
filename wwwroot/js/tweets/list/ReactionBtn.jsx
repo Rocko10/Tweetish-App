@@ -9,38 +9,33 @@ export default class ReactionBtn extends React.Component
             text: ''
         }
 
-        this.sendReacted = this.sendReacted.bind(this)
+        this.setReactionStatusText = this.setReactionStatusText.bind(this)
         this.sendToggleUserTweetReaction = this.sendToggleUserTweetReaction.bind(this)
+
+        window.addEventListener('user-tweet-reactions-fetched', e => {this.setReactionStatusText()})
     }
 
-    componentDidMount() {
-        this.sendReacted()
-    }
+    componentDidMount() {}
 
-    sendReacted() {
-        fetch(`/userTweetReaction/reacted/${this.props.userId}/${this.props.tweet.id}/${this.props.reaction.id}`)
-        .then(res => res.json())
-        .then(reaction => {
-            let text = ''
+    setReactionStatusText() {
+        const reacted = this.props.reactedToTweet(this.props.userId, this.props.tweet.id, this.props.reaction.id)
+        let text = ''
 
-            if (this.props.reaction.name === 'Heart') {
-                if (reaction.reacted) {
-                    text = 'Un-Heart'
-                } else {
-                    text = 'Heart'
-                }
+        if (this.props.reaction.name == 'Heart') {
+            if (reacted) {
+                text = 'Un-Heart'
+            } else {
+                text = 'Heart'
             }
-
-            if (this.props.reaction.name === 'Star') {
-                if (reaction.reacted) {
-                    text = 'Un-Star'
-                } else {
-                    text = 'Star'
-                }
+        } else if (this.props.reaction.name == 'Star') {
+            if (reacted) {
+                text = 'Un-Star'
+            } else {
+                text = 'Star'
             }
+        }
 
-            this.setState({text})
-        })
+        this.setState({text})
     }
 
     sendToggleUserTweetReaction(e) {

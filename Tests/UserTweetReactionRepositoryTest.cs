@@ -69,6 +69,29 @@ namespace TweetishApp.Data
             return (user, tweet, reaction);
         }
 
+        private void populateMany()
+        {
+            AppUser user = new AppUser {Nickname = "marcow"};
+            AppUser joe = new AppUser {Nickname = "joe"};
+            _dbContext.Add<AppUser>(user);
+            _dbContext.Add<AppUser>(joe);
+
+            ReactionModel star = new ReactionModel { Name = "Star" };
+            ReactionModel heart = new ReactionModel { Name = "Heart" };
+            ReactionModel cross = new ReactionModel { Name = "Cross" };
+            _dbContext.Add<ReactionModel>(star);
+            _dbContext.Add<ReactionModel>(heart);
+            _dbContext.Add<ReactionModel>(cross);
+
+            _dbContext.SaveChanges();
+
+            TweetModel tweet1 = new TweetModel {UserId = user.Id, Text = "Super First Tweet"};
+            TweetModel tweet2 = new TweetModel {UserId = joe.Id, Text = "Joe s tweet"};
+            _dbContext.Add<TweetModel>(tweet1);
+            _dbContext.Add<TweetModel>(tweet2);
+            _dbContext.SaveChanges();
+        }
+
         [Test]
         public async Task IsCreatingUserTweetReactionInRepo()
         {
@@ -148,6 +171,37 @@ namespace TweetishApp.Data
                 new UserTweetReaction {UserId = data.Item1.Id, TweetId = data.Item2.Id, ReactionId = data.Item3.Id}
             );
             Assert.True(reacted.Reacted);
+        }
+
+        [Test]
+        public async Task IsReactingToManyInRepo()
+        {
+            this.populateMany();
+
+            AppUser marcow = _dbContext.Users.FirstOrDefault(u => u.Nickname == "marcow");
+            TweetModel tweet1 = _dbContext.Tweet.FirstOrDefault(t => t.UserId == marcow.Id);
+            ReactionModel star = _dbContext.Reaction.FirstOrDefault(r => r.Name == "Star");
+            ReactionModel heart = _dbContext.Reaction.FirstOrDefault(r => r.Name == "Heart");
+            ReactionModel cross = _dbContext.Reaction.FirstOrDefault(r => r.Name == "Cross");
+
+            var r1 = new UserTweetReaction {UserId = marcow.Id, TweetId = tweet1.Id, ReactionId = star.Id};
+            var r2 = new UserTweetReaction {UserId = marcow.Id, TweetId = tweet1.Id, ReactionId = heart.Id};
+            var r3 = new UserTweetReaction {UserId = marcow.Id, TweetId = tweet1.Id, ReactionId = cross.Id};
+
+            await _repository.Toggle(r1);
+            await _repository.Toggle(r2);
+            await _repository.Toggle(r3);
+
+            IEnumerable<UserTweetReactionModel> setupReactions = _dbContext.UserTweetReaction.ToList();
+            Assert.AreEqual(3, setupReactions.Count());
+
+            var requestReactions = new UserTweetReaction[] {r1, r1, r3};
+
+            IEnumerable<UserTweetReaction> resultReacions = await _repository.ReactedToMany(requestReactions);
+
+            foreach (UserTweetReaction u in resultReacions) {
+                Assert.True(u.Reacted);
+            }
         }
     }
 }

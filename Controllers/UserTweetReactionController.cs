@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -43,6 +44,14 @@ namespace TweetishApp.Controllers
             userTweetReaction = await _userTweetReactionService.Reacted(userTweetReaction);
 
             return Ok(userTweetReaction);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReactedToMany([FromBody] IEnumerable<UserTweetReaction> reactions)
+        {
+            await _userTweetReactionService.ReactedToMany(reactions);
+
+            return Ok(reactions);
         }
     }
 }

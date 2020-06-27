@@ -33,7 +33,12 @@ export default class Tweet extends React.Component {
 
     renderReactions() {
         return this.props.reactions
-        .map(r => <ReactionBtn reaction={r} userId={this.props.userId} tweet={this.props.tweet} />)
+        .map(r => <ReactionBtn 
+            reaction={r}
+            userId={this.props.userId}
+            tweet={this.props.tweet}
+            reactedToTweet={this.props.reactedToTweet}
+        />)
     }
 
     sendIsRetweeted() {

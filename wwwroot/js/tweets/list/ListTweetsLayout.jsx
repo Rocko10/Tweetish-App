@@ -10,13 +10,16 @@ export default class ListTweetsLayout extends React.Component {
 
         this.state = {
             tweets: [],
-            reactions: []
+            reactions: [],
+            userTweetReactions: []
         }
 
         this.fetchTweets = this.fetchTweets.bind(this)
         this.renderTweets = this.renderTweets.bind(this)
         this.fetchReactions = this.fetchReactions.bind(this)
         this.fetchRetweets = this.fetchRetweets.bind(this)
+        this.fetchUserReactions = this.fetchUserReactions.bind(this)
+        this.reactedToTweet = this.reactedToTweet.bind(this)
     }
 
     componentDidMount() {
@@ -24,6 +27,7 @@ export default class ListTweetsLayout extends React.Component {
         this.fetchRetweets()
         window.addEventListener('tweet-created', e => {this.fetchTweets(this.profileId)})
         window.addEventListener('tweets-fetched', e => {this.fetchReactions()})
+        window.addEventListener('reactions-fetched', e => {this.fetchUserReactions()})
     }
 
     fetchTweets() {
@@ -51,12 +55,50 @@ export default class ListTweetsLayout extends React.Component {
         })
     }
 
+    fetchUserReactions() {
+        const tweets = this.state.tweets
+        const reactions = this.state.reactions
+        const userId = this.profileId
+        let userReactions = []
+
+        for (const t of tweets) {
+            for (const r of reactions) {
+                userReactions.push(
+                    {userId, tweetId: t.id, reactionId: r.id}
+                );
+            }
+        } 
+
+        const req = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userReactions)
+        }
+
+        fetch(`/userTweetReaction/reactedToMany`, req)
+        .then(res => res.json())
+        .then(userTweetReactions => 
+            this.setState({userTweetReactions}, () => { window.dispatchEvent(new Event('user-tweet-reactions-fetched')) }))
+    }
+
+    reactedToTweet(profileId, tweetId, reactionId) {
+        const reactions = this.state.userTweetReactions
+        for (const r of reactions) {
+            if (r.userId == profileId && r.tweetId == tweetId && r.reactionId == reactionId) {
+                return r.reacted
+            }
+        }
+    }
+
     renderTweets() {
         const tweets = this.state.tweets.map(t => {
             return <Tweet 
             tweet={t} 
             userId={this.userId} 
             reactions={this.state.reactions}
+            reactedToTweet={this.reactedToTweet}
             />
         })
 

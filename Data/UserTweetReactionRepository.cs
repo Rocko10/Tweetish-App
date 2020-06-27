@@ -1,4 +1,5 @@
 using TweetishApp.Core.Interfaces;
+using System.Collections.Generic;
 using System;
 using TweetishApp.Models;
 using TweetishApp.Core.Entities;
@@ -73,6 +74,20 @@ namespace TweetishApp.Data
             userTweetReaction.Reacted = true;
 
             return userTweetReaction;
+        }
+
+        public async Task<IEnumerable<UserTweetReaction>> ReactedToMany(IEnumerable<UserTweetReaction> reactions)
+        {
+            foreach(UserTweetReaction r in reactions) {
+                UserTweetReactionModel model = await _dbContext.UserTweetReaction
+                .FirstOrDefaultAsync(u => u.UserId == r.UserId && u.TweetId == r.TweetId && u.ReactionId == r.ReactionId);
+
+                if (model != null) {
+                    r.Reacted = true;
+                }
+            }
+
+            return reactions;
         }
     }
 }

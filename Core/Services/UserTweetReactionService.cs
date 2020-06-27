@@ -1,4 +1,5 @@
 using TweetishApp.Core.Interfaces;
+using System.Collections.Generic;
 using TweetishApp.Core.Entities;
 using System.Threading.Tasks;
 
@@ -21,6 +22,11 @@ namespace TweetishApp.Core.Services
         public async Task<UserTweetReaction> Reacted(UserTweetReaction userTweetReaction)
         {
             return await _repository.Reacted(userTweetReaction);
+        }
+
+        public async Task<IEnumerable<UserTweetReaction>> ReactedToMany(IEnumerable<UserTweetReaction> reactions)
+        {
+            return await _repository.ReactedToMany(reactions);
         }
     }
 }
