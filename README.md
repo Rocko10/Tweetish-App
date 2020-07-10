@@ -3,4 +3,8 @@
 # Tweetish-App
 Basic implementation features of Twitter in .Net core
 
-WIP
+## Features
+* Create, edit, delete tweet
+* Follow, unfollow
+* Retweet
+* React to many tweets (like favorites)
